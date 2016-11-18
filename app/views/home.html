@@ -1,0 +1,33 @@
+<div class="page-wrapper">
+    <div class="page-header text-center">
+        <h1>
+            <img class="logo-img" src="images/logo.png" ng-click="home.toDefault()" style="cursor: pointer" />Welcome to FireChat
+        </h1>
+        <strong>A real-time chat application built using <a href="https://www.firebase.com" target="_blank">Firebase</a>'s <a href="https://www.firebase.com/docs/web/libraries/angular/" target="_blank">AngularFire</a>        library</strong>
+    </div>
+
+    <div id="authSection">
+
+        <div class="collapse" id="loginSection">
+            <form ng-submit="home.login()" class="form-sign-in">
+                <input id="txtEmail" type="email" name="email" ng-model="home.user.email" class="no-radius form-control" placeholder="Email address" required>
+                <input id="txtPassword" type="password" name="password" ng-model="home.user.password" class="no-radius form-control" placeholder="Password" required>
+                <button style="opacity:0.9" class="no-radius btn btn-lg btn-info btn-block" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="collapse" id="registerSection">
+            <form ng-submit="home.register()" class="form-sign-in">
+                <input id="txtEmail" type="email" name="email" ng-model="home.user.email" class="no-radius form-control" placeholder="Email address" required>
+                <input id="txtPassword" type="password" name="password" ng-model="home.user.password" class="no-radius form-control" placeholder="Password" required>
+                <button style="opacity:0.9" class="no-radius btn btn-lg btn-warning btn-block" type="submit">Register</button>
+            </form>
+        </div>
+
+        <button style="opacity:0.9" class="no-radius btn btn-lg btn-info authBtn btn-block" data-toggle="collapse" data-target="#loginSection" ng-hide="home.clicked" ng-click="home.hideBtn()">Login</button>
+        <button style="opacity:0.9" class="no-radius btn btn-lg btn-warning authBtn btn-block" data-toggle="collapse" data-target="#registerSection" ng-hide="home.clicked" ng-click="home.hideBtn()">Register</button>
+    </div>
+    <a href="https://github.com/vesperiaLSU/FireSlack.git" style="color:whitesmoke"><img id="githubLogo" src="./images/forkMe.png"></img>
+    </a>
+    <div id="homeBackground"></div>
+</div>
