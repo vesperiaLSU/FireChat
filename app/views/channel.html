@@ -1,0 +1,38 @@
+<div class="main">
+    <div class="sidebar">
+        <div class="slack-name">
+            <h2>
+                <img style="width:30px" src="images/logo.png" />FireChat
+            </h2>
+        </div>
+
+        <div class="channel-list">
+            <div class="list-head">Channels</div>
+            <div class="channel" ng-repeat="cha in channel.channels">
+                <a ui-sref="channels.messages({ channelId: cha.$id })"># {{ cha.name }}</a>
+            </div>
+            <div class="channel create">
+                <a ui-sref="channels.create">+ Create Channel</a>
+            </div>
+        </div>
+
+        <div class="my-info">
+            <img class="user-pic" ng-src="{{ channel.getGravatar(channel.profile.$id) }}" />
+            <div class="user-info">
+                <div class="user-name">
+                    {{ channel.profile.displayName }}
+                </div>
+
+                <div class="options">
+                    <a style="font-size:16px" ui-sref="profile">Edit Profile</a> /
+                    <a style="font-size:16px" href="#" ng-click="channel.logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBoard" class="message-pane">
+        <div ui-view>
+        </div>
+    </div>
+</div>

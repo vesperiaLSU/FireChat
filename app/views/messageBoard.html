@@ -1,0 +1,38 @@
+<div class="header">
+    <h1>{{ message.channelName }}</h1>
+</div>
+
+<div class="message-wrap" ng-repeat="msg in message.messages">
+    <div ng-if="msg.uid !== message.profile.$id">
+        <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
+        <div class="message-info">
+            <div class="user-name">
+                {{ channel.getDisplayName(msg.uid) }}
+                <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span>
+            </div>
+            <div class="message">
+                {{ msg.body }}
+            </div>
+        </div>
+    </div>
+    <div ng-if="msg.uid === message.profile.$id" style="text-align:end">
+        <div class="message-info">
+            <div class="user-name">
+                <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
+            </div>
+            <div class="message">
+                {{ msg.body }}
+            </div>
+        </div>
+        <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
+    </div>
+</div>
+
+<form class="message-form" ng-submit="message.sendMessage()">
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="message.message" placeholder="Type a message...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Send</button>
+        </span>
+    </div>
+</form>

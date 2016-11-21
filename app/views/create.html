@@ -1,0 +1,10 @@
+<div class="header">
+    <h1>Create a channel</h1>
+</div>
+
+<form ng-submit="channel.createChannel()">
+    <div style="display:inline-flex;" class="input-group">
+        <input id="channelName" type="text" class="form-control" placeholder="Channel Name" ng-model="channel.newChannel.name" />
+        <button type="submit" class="no-radius btn">Create</button>
+    </div>
+</form>

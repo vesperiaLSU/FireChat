@@ -1,0 +1,19 @@
+<div class="page-wrapper">
+    <div class="page-header text-center">
+        <h1>
+            <img class="logo-img" src="images/logo.png" />Edit Profile
+        </h1>
+    </div>
+
+    <form ng-submit="profile.updateProfile()">
+        <div class="form-sign-in">
+            <input id="txtDisplayName" type="text" ng-blur="visitedDisplayName = true" class="no-radius form-control" placeholder="display name" ng-model="profile.profile.displayName" maxlength="25" required/>
+            <p ng-show="visitedDisplayName && !profile.profile.displayName" style="color: red">
+                A display name is required before chatting.
+            </p>
+            <button style="opacity:0.9" type="submit" class="no-radius btn btn-lg btn-success btn-block">Update Display Name</button>
+            <button style="opacity:0.9; margin-top:20px" class="no-radius btn btn-lg btn-info btn-block" ng-click="profile.loginWithDifferentUser()">Login with the different user</button>
+        </div>
+    </form>
+    <div id="homeBackground"></div>
+</div>
