@@ -2,13 +2,13 @@
 (function() {
     'use strict';
 
-    // initialize Firebase
-    const config = {
-        apiKey: "AIzaSyA7Mm36tHp86SpUE95FR9_O__kOlFtZ-Ug",
-        authDomain: "web-quickstart-ff1a5.firebaseapp.com",
-        databaseURL: "https://web-quickstart-ff1a5.firebaseio.com",
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyC2tM3hbzyQjjUeZ5tboZAM6eaSKSxHMz0",
+        authDomain: "firechat-d57d5.firebaseapp.com",
+        databaseURL: "https://firechat-d57d5.firebaseio.com",
         storageBucket: "",
-        messagingSenderId: "233474151972"
+        messagingSenderId: "77056511474"
     };
     firebase.initializeApp(config);
 
@@ -62,6 +62,21 @@
                         },
                         channelName: function($stateParams, channels) {
                             return '#' + channels.$getRecord($stateParams.channelId).name;
+                        }
+                    }
+                })
+                .state('channels.direct', {
+                    url: '/{uid}/messages/direct',
+                    templateUrl: 'views/messageBoard.html',
+                    controller: 'MessageCtrl as message',
+                    resolve: {
+                        messages: function($stateParams, Message, profile) {
+                            return Message.forUser($stateParams.uid, profile.$id).$loaded();
+                        },
+                        channelName: function($stateParams, Users) {
+                            return Users.all.$loaded().then(function() {
+                                return '@' + Users.getDisplayName($stateParams.uid);
+                            })
                         }
                     }
                 })

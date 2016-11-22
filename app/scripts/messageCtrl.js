@@ -7,7 +7,6 @@
         self.profile = profile;
         self.messages = messages;
         self.channelName = channelName;
-
         self.message = '';
 
         self.sendMessage = function() {

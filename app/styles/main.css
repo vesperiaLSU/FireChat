@@ -151,6 +151,7 @@ body {
   width: 80%;
   overflow-y: scroll;
   padding: 55px 15px 65px 15px;
+  background-color: #f1f1f1;
 }
 
 .message-pane .header {
@@ -264,7 +265,18 @@ body {
   box-sizing: border-box;
 }
 
-.message {
+.message-me {
   font-size: 18px;
   font-family: Arial;
+  border-radius: 4px;
+  background-color: #b2e281;
+  padding: 5px 13px;
+}
+
+.message-other {
+  font-size: 18px;
+  font-family: Arial;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 5px 13px;
 }

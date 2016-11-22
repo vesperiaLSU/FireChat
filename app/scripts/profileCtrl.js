@@ -2,11 +2,11 @@
 
 (function() {
     angular.module('angularfireChatApp')
-        .controller('ProfileCtrl', ["$state", "md5", "currentUser", "profile", "$firebaseAuth",
-            function($state, md5, currentUser, profile, $firebaseAuth) {
+        .controller('ProfileCtrl', ["$state", "md5", "currentUser", "profile",
+            function($state, md5, currentUser, profile) {
                 var self = this;
-                const auth = $firebaseAuth();
                 self.profile = profile;
+                self.btnTxt = self.profile.displayName ? 'Update display name' : 'Create a display name for chat';
 
                 // if current user cannot be resolved, go back to home page
                 if (!currentUser) {
@@ -25,13 +25,6 @@
                         toastr.error(error.message, 'Update Failed!');
                     });
                 };
-
-                // sign off current user and then send back to home page
-                self.loginWithDifferentUser = function() {
-                    auth.$signOut();
-                    $state.go('home');
-                };
-
             }
         ]);
 }());

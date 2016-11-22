@@ -43,6 +43,12 @@
                 if ($('#registerSection').hasClass('in')) {
                     $('#registerSection').removeClass('in');
                 }
+
+                // store auth info
+                self.user = {
+                    email: '',
+                    password: ''
+                };
             };
 
             // login the user
@@ -50,15 +56,18 @@
                 auth.$signInWithEmailAndPassword(self.user.email, self.user.password)
                     .then(firebaseUser => {
                         if (firebaseUser) {
-                            var displayName = Users.getDisplayName(firebaseUser.uid);
-                            if (displayName) {
-                                toastr.success('You just signed in as: ' + displayName, 'Succeed!');
-                                $state.go('channels');
-                            }
-                            else {
-                                toastr.success('You just signed in as: ' + firebaseUser.email, 'Succeed!');
-                                $state.go('profile');
-                            }
+                            var displayName = '';
+                            Users.all.$loaded().then(function() {
+                                displayName = Users.getDisplayName(firebaseUser.uid);
+                                if (displayName) {
+                                    toastr.success('You just signed in as: ' + displayName, 'Succeed!');
+                                    $state.go('channels');
+                                }
+                                else {
+                                    toastr.success('You just signed in as: ' + firebaseUser.email, 'Succeed!');
+                                    $state.go('profile');
+                                }
+                            });
                         }
                         else {
                             toastr.error("Either your email or password is incorrect", 'Login Failed!');

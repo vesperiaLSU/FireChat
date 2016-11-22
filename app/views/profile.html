@@ -11,8 +11,7 @@
             <p ng-show="visitedDisplayName && !profile.profile.displayName" style="color: red">
                 A display name is required before chatting.
             </p>
-            <button style="opacity:0.9" type="submit" class="no-radius btn btn-lg btn-success btn-block">Update Display Name</button>
-            <button style="opacity:0.9; margin-top:20px" class="no-radius btn btn-lg btn-info btn-block" ng-click="profile.loginWithDifferentUser()">Login with the different user</button>
+            <button style="opacity:0.9" type="submit" class="no-radius btn btn-lg btn-success btn-block">{{ profile.btnTxt }}</button>
         </div>
     </form>
     <div id="homeBackground"></div>

@@ -10,7 +10,7 @@
                 {{ channel.getDisplayName(msg.uid) }}
                 <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span>
             </div>
-            <div class="message">
+            <div class="message-other">
                 {{ msg.body }}
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="user-name">
                 <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
             </div>
-            <div class="message">
+            <div class="message-me">
                 {{ msg.body }}
             </div>
         </div>
@@ -36,3 +36,10 @@
         </span>
     </div>
 </form>
+
+<script>
+    $(function() {
+        var objDiv = document.getElementById("messageBoard");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    });
+</script>
