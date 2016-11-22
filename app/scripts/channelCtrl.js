@@ -34,6 +34,7 @@
                     auth.$signOut();
                     $state.go('home');
                 });
+                toastr.warning('You just signed out as ' + self.profile.displayName, 'Succeed!');
             };
 
             // create a new channel and then enter it
