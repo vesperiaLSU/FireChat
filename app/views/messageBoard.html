@@ -38,7 +38,9 @@
 </form>
 
 <script>
+    /*global $*/
     $(function() {
+        // automatically scroll to the bottom of the message board when loaded
         var objDiv = document.getElementById("messageBoard");
         objDiv.scrollTop = objDiv.scrollHeight;
     });

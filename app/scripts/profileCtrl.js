@@ -1,4 +1,4 @@
-/*global angular,firebase,toastr*/
+/*global angular,toastr*/
 
 (function() {
     angular.module('angularfireChatApp')
