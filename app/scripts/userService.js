@@ -1,7 +1,7 @@
 /*global angular,firebase*/
 
-(function() {
-    angular.module('angularfireChatApp').factory('Users', function($firebaseArray, $firebaseObject) {
+(function () {
+    angular.module('angularfireChatApp').factory('Users', function ($firebaseArray, $firebaseObject) {
 
         // get a reference of the firebase database with users object
         var usersRef = firebase.database().ref().child('users');
@@ -11,10 +11,10 @@
         var users = $firebaseArray(usersRef);
 
         var Users = {
-            getProfile: function(uid) {
+            getProfile: function (uid) {
                 return $firebaseObject(usersRef.child(uid));
             },
-            getDisplayName: function(uid) {
+            getDisplayName: function (uid) {
                 if (users.$getRecord(uid)) {
                     return users.$getRecord(uid).displayName;
                 }
@@ -22,16 +22,17 @@
                     return '';
                 }
             },
-            getGravatar: function(uid) {
+            getGravatar: function (uid) {
                 return '//www.gravatar.com/avatar/' + users.$getRecord(uid).emailHash;
             },
-            setOnline: function(uid) {
+            setOnline: function (uid) {
                 var connected = $firebaseObject(connectedRef);
-                var online = $firebaseArray(usersRef.child(uid + '/online'));
+                var online = $firebaseObject(usersRef.child(uid + '/online'));
 
-                connected.$watch(function() {
-                    if (connected.$value === true) {
-                        online.$add(true).then(function(connectedRef) {
+                connected.$watch(function () {
+                    if (connected.$value === true && !online.$value) {
+                        online.$value = true;
+                        online.$save().then(function (connectedRef) {
                             connectedRef.onDisconnect().remove();
                         });
                     }

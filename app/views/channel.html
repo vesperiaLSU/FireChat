@@ -9,7 +9,10 @@
         <div class="channel-list">
             <div class="list-head">Channels</div>
             <div class="channel" ng-repeat="cha in channel.channels">
-                <a ui-sref="channels.messages({ channelId: cha.$id })"># {{ cha.name }}</a>
+                <div style="display: flex">
+                    <a ui-sref="channels.messages({ channelId: cha.$id })"># {{ cha.name }}</a>
+                    <a ng-show="cha.admin === channel.profile.$id" style="width: 15%" href="#" data-toggle="tooltip" title="delete group"><span class="glyphicon glyphicon-remove" style="cursor:pointer; color: rgba(255,255,255,.6)"></span></a>
+                </div>
             </div>
             <div class="channel create">
                 <a ui-sref="channels.create">+ Create Channel</a>

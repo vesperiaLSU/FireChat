@@ -11,7 +11,7 @@ var jsFiles = 'app/scripts/**/*.js',
     jsDest = 'app/dist/scripts',
     cssDest = 'app/dist/styles';
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
     return gulp
         .src('app/dist', {
             read: false
@@ -19,20 +19,21 @@ gulp.task('clean', function() {
         .pipe(clean());
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
     return gulp
         .src(jsFiles)
-        .pipe(concat('scripts.js'))
+        .pipe(concat('scripts.min.js'))
         .pipe(gulp.dest(jsDest))
         .on('error', gutil.log);
 });
 
-gulp.task('cleanCSS', function() {
+gulp.task('css', function () {
     return gulp
         .src(cssFiles)
         .pipe(cleanCSS({
             compatibility: 'ie8'
         }))
+        .pipe(concat('main.min.css'))
         .pipe(gulp.dest(cssDest))
         .on('error', gutil.log);
 });

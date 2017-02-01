@@ -1,5 +1,5 @@
 /*global angular,toastr,firebase*/
-(function() {
+(function () {
     'use strict';
 
     // Initialize Firebase
@@ -13,12 +13,18 @@
     firebase.initializeApp(config);
 
     // initialize the duration time [milliseconds] of toastr
-    toastr.options.timeOut = 5000;
+    toastr.options.timeOut = 3000;
 
     // initialize the configuration of app
     angular
         .module('angularfireChatApp', ['firebase', 'angular-md5', 'ui.router'])
-        .config(function($stateProvider, $urlRouterProvider) {
+        .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+
             $stateProvider
                 .state('home', {
                     url: '/',
@@ -32,10 +38,10 @@
                     resolve: {
                         Users: 'Users',
                         Channels: 'Channels',
-                        channels: function(Channels) {
+                        channels: function (Channels) {
                             return Channels.$loaded();
                         },
-                        profile: function($state, Users) {
+                        profile: function ($state, Users) {
                             var firebaseUser = firebase.auth().currentUser;
                             if (!firebaseUser) {
                                 $state.go('home');
@@ -57,10 +63,10 @@
                     controller: 'MessageCtrl as message',
                     templateUrl: 'views/messageBoard.html',
                     resolve: {
-                        messages: function($stateParams, Message) {
+                        messages: function ($stateParams, Message) {
                             return Message.forChannel($stateParams.channelId).$loaded();
                         },
-                        channelName: function($stateParams, channels) {
+                        channelName: function ($stateParams, channels) {
                             return '#' + channels.$getRecord($stateParams.channelId).name;
                         }
                     }
@@ -70,11 +76,11 @@
                     templateUrl: 'views/messageBoard.html',
                     controller: 'MessageCtrl as message',
                     resolve: {
-                        messages: function($stateParams, Message, profile) {
+                        messages: function ($stateParams, Message, profile) {
                             return Message.forUser($stateParams.uid, profile.$id).$loaded();
                         },
-                        channelName: function($stateParams, Users) {
-                            return Users.all.$loaded().then(function() {
+                        channelName: function ($stateParams, Users) {
+                            return Users.all.$loaded().then(function () {
                                 return '@' + Users.getDisplayName($stateParams.uid);
                             });
                         }
@@ -91,7 +97,7 @@
                     controller: 'ProfileCtrl as profile',
                     resolve: {
                         Users: 'Users',
-                        profile: function($state, Users) {
+                        profile: function ($state, Users) {
                             // get a referece of the firebaseAuth
                             var firebaseUser = firebase.auth().currentUser;
                             if (!firebaseUser) {
@@ -100,7 +106,7 @@
 
                             return Users.getProfile(firebaseUser.uid).$loaded();
                         },
-                        currentUser: function() {
+                        currentUser: function () {
                             return firebase.auth().currentUser;
                         }
                     }
