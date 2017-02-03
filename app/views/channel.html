@@ -11,7 +11,9 @@
             <div class="channel" ng-repeat="cha in channel.channels">
                 <div style="display: flex">
                     <a ui-sref="channels.messages({ channelId: cha.$id })"># {{ cha.name }}</a>
-                    <a ng-show="cha.admin === channel.profile.$id" style="width: 15%" href="#" data-toggle="tooltip" title="delete group"><span class="glyphicon glyphicon-remove" style="cursor:pointer; color: rgba(255,255,255,.6)"></span></a>
+                    <a type="button" ng-show="cha.admin === channel.profile.$id" style="width: 15%" href="#" data-toggle="tooltip" title="delete channel" ng-click="">
+                        <span class="glyphicon glyphicon-remove" id="deleteChannel" />
+                    </a>
                 </div>
             </div>
             <div class="channel create">

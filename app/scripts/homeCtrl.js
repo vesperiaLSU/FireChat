@@ -1,10 +1,6 @@
-/*global angular,toastr,$,localStorage*/
+/*global angular,toastr,$*/
 (function () {
     "use strict";
-
-    var config = {
-        apiKey: "AIzaSyC2tM3hbzyQjjUeZ5tboZAM6eaSKSxHMz0"
-    };
 
     // define the controller for Home state
     angular.module("angularfireChatApp").controller("HomeCtrl", ["$state", "$firebaseAuth", "Users",
@@ -24,24 +20,6 @@
 
             // flag to indicate whether the login or register btn is clicked
             self.clicked = false;
-
-            auth.$onAuthStateChanged(firebaseUser => {
-                if (firebaseUser) {
-                    var key = "firebase:authUser:" + config.apiKey + ":[DEFAULT]";
-                    var signedInUser = JSON.parse(localStorage.getItem(key));
-                    if (firebaseUser.uid === signedInUser.uid) {
-                        $state.go('channels');
-                    }
-                    else {
-                        self.user.email = firebaseUser.email;
-                        self.clicked = true;
-                        $('#loginSection').addClass('in');
-                    }
-                }
-                else {
-                    $state.go('home');
-                }
-            });
 
             // hide the login and register btn if either one is clicked
             self.hideBtn = function () {

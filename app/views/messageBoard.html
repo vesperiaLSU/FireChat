@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="msg.uid === message.profile.$id" style="text-align:end">
+    <div ng-if="msg.uid === message.profile.$id" style="text-align:right">
         <div class="message-info">
             <div class="user-name">
                 <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
@@ -30,18 +30,44 @@
 
 <form class="message-form" ng-submit="message.sendMessage()">
     <div class="input-group">
+        <div class="input-group-btn btn-group">
+            <div class="dropup">
+                <button class="btn btn-default dropdown-toggle" id="attachment" data-toggle="dropdown" type="button"><span class="glyphicon glyphicon-plus" /></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <div id="btnImport" class="btn btn-default no-border">
+                            <i class="glyphicon glyphicon-hdd"></i>&nbsp;
+                            <span>Share from computer</span>
+                            <input id="fileUploader" type="file" nv-file-select uploader="message.uploader" multiple>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <input type="text" class="form-control" ng-model="message.message" placeholder="Type a message...">
         <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Send</button>
+            <button class="btn btn-info" type="submit">Send</button>
         </span>
     </div>
 </form>
 
 <script>
     /*global $*/
-    $(function() {
+    $(function () {
         // automatically scroll to the bottom of the message board when loaded
         var objDiv = document.getElementById("messageBoard");
         objDiv.scrollTop = objDiv.scrollHeight;
+
+        $('#attachment').hover(function () {
+            $(this).addClass('btn-success');
+        }, function () {
+            $(this).removeClass('btn-success');
+        });
+
+        $('#btnImport').hover(function () {
+            $(this).addClass('btn-info');
+        }, function () {
+            $(this).removeClass('btn-info');
+        });
     });
 </script>

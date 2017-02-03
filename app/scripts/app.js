@@ -17,13 +17,13 @@
 
     // initialize the configuration of app
     angular
-        .module('angularfireChatApp', ['firebase', 'angular-md5', 'ui.router'])
+        .module('angularfireChatApp', ['firebase', 'angular-md5', 'ui.router', 'angularFileUpload'])
         .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
-            $locationProvider.html5Mode({
-                enabled: true,
-                requireBase: false
-            });
+            // $locationProvider.html5Mode({
+            //     enabled: true,
+            //     requireBase: false
+            // });
 
             $stateProvider
                 .state('home', {
@@ -41,18 +41,17 @@
                         channels: function (Channels) {
                             return Channels.$loaded();
                         },
-                        profile: function ($state, Users) {
-                            var firebaseUser = firebase.auth().currentUser;
-                            if (!firebaseUser) {
-                                $state.go('home');
-                            }
-
-                            return Users.getProfile(firebaseUser.uid).$loaded().then(profile => {
-                                if (profile.displayName) {
-                                    return profile;
-                                }
-                                else {
-                                    $state.go('profile');
+                        profile: function ($state, Users, $firebaseAuthService) {
+                            return $firebaseAuthService.$requireSignIn().then(user => {
+                                if (user) {
+                                    return Users.getProfile(user.uid).$loaded().then(profile => {
+                                        if (profile.displayName) {
+                                            return profile;
+                                        }
+                                        else {
+                                            $state.go('profile');
+                                        }
+                                    }, error => $state.go('home'));
                                 }
                             }, error => $state.go('home'));
                         }
@@ -97,17 +96,18 @@
                     controller: 'ProfileCtrl as profile',
                     resolve: {
                         Users: 'Users',
-                        profile: function ($state, Users) {
+                        profile: function ($state, Users, $firebaseAuthService) {
                             // get a referece of the firebaseAuth
-                            var firebaseUser = firebase.auth().currentUser;
-                            if (!firebaseUser) {
-                                $state.go('home');
-                            }
-
-                            return Users.getProfile(firebaseUser.uid).$loaded();
+                            return $firebaseAuthService.$requireSignIn().then(user => {
+                                if (user) {
+                                    return Users.getProfile(user.uid).$loaded();
+                                }
+                            }, error => $state.go('home'));
                         },
-                        currentUser: function () {
-                            return firebase.auth().currentUser;
+                        currentUser: function ($state, $firebaseAuthService) {
+                            return $firebaseAuthService.$requireSignIn().then(user => {
+                                return user;
+                            }, error => $state.go('home'));
                         }
                     }
 

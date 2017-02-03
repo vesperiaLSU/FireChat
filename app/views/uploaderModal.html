@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{modalTitle}}</h4>
+</div>
+<div class="modal-body" style="height: 440px;">
+    <form class="form-horizontal">
+        <br>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="title" class="col-sm-3 control-label">Title</label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="title">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fileSize" class="col-sm-3 control-label">File Size</label>
+                <label id="fileSize" class="col-sm-9 control-label">{{size}}</label>
+            </div>
+
+            <div class="form-group">
+                <label for="comments" class="col-sm-3 control-label">Add Comment (optional)</label>
+                <textarea class="form-control" rows="5" id="comments" placeholder="Comments..." maxlength="550" ng-model="comments" />
+            </div>
+
+            <button class="btn btn-primary col-sm-2 col-sm-offset-4 font-style" ng-click="submit()" style="width:200px;">{{buttonType}}</button>
+        </div>
+    </form>
+</div>
+<div class="modal-footer" style="height:60px;">
+    <button type="button" class="btn btn-default">Close</button>
+    <button type="button" class="btn btn-success" ng-click="cancel()">Close</button>
+</div>
