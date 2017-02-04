@@ -17,7 +17,7 @@
 
     // initialize the configuration of app
     angular
-        .module('angularfireChatApp', ['firebase', 'angular-md5', 'ui.router', 'angularFileUpload'])
+        .module('angularfireChatApp', ['firebase', 'angular-md5', 'ui.router', 'angularFileUpload', 'ui.bootstrap'])
         .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
             // $locationProvider.html5Mode({

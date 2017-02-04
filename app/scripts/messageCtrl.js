@@ -23,25 +23,30 @@
             }]
         });
 
-        // uploader.onAfterAddingFile = function (fileItem) {
-        //     $uibModal.open({
-        //         animation: true,
-        //         templateUrl: '/app/views/uploaderModal.html',
-        //         controller: 'userModalCtrl',
-        //         size: 'md',
-        //         backdrop: 'static',
-        //         keyboard: false,
-        //         windowClass: 'custom-modal',
-        //         openedClass: 'always-scroll',
-        //         resolve: {
-        //             user: {
-        //                 email: scope.email,
-        //                 name: scope.displayName,
-        //                 avatar_url: scope.avatar_url
-        //             }
-        //         }
-        //     })
-        // };
+        uploader.onAfterAddingFile = function (fileItem) {
+            var isHtml5 = uploader.isHTML5;
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '/app/views/uploaderModal.html',
+                controller: 'fileUploaderCtrl as fu',
+                size: 'md',
+                backdrop: 'static',
+                keyboard: false,
+                windowClass: 'custom-modal',
+                // openedClass: 'always-scroll',
+                resolve: {
+                    file: fileItem,
+                    isHTML5: isHtml5
+                }
+            });
+
+            modalInstance.result.then(update => {
+                console.log(update + "modal resolved");
+            }, () => {
+                console.log("modal dismissed");
+            });
+        };
 
         // send a message to the database
         self.sendMessage = function () {

@@ -1,32 +1,36 @@
-<div class="modal-header">
-    <h4 class="modal-title">{{modalTitle}}</h4>
+<div class="modal-header" id="uploaderModalHeader">
+    <h4 class="modal-title" id="modalTitle">Upload a file?</h4>
+    <a><i class="glyphicon glyphicon-remove removeIcon" ng-click="fu.close()"></i></a>
 </div>
-<div class="modal-body" style="height: 440px;">
+<div class="modal-body" id="uploaderModalBody">
     <form class="form-horizontal">
-        <br>
         <div class="col-sm-12">
+            <div id="preview">
+                <div ng-show="fu.isHTML5" ng-thumb="{ file: fu.data, height: 100 }"></div>
+            </div>
+
             <div class="form-group">
                 <label for="title" class="col-sm-3 control-label">Title</label>
                 <div class="col-sm-9">
-                    <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="title">
+                    <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="fu.title">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="fileSize" class="col-sm-3 control-label">File Size</label>
-                <label id="fileSize" class="col-sm-9 control-label">{{size}}</label>
+                <label ng-show="fu.isHTML5" id="fileSize" class="col-sm-9 control-label" nowrap>{{fu.size/1024|number:2}}KB</label>
             </div>
 
             <div class="form-group">
                 <label for="comments" class="col-sm-3 control-label">Add Comment (optional)</label>
-                <textarea class="form-control" rows="5" id="comments" placeholder="Comments..." maxlength="550" ng-model="comments" />
+                <div class="col-sm-9">
+                    <textarea class="form-control" rows="4" id="comments" placeholder="Comments..." maxlength="200" ng-model="fu.comments" />
+                </div>
             </div>
-
-            <button class="btn btn-primary col-sm-2 col-sm-offset-4 font-style" ng-click="submit()" style="width:200px;">{{buttonType}}</button>
         </div>
     </form>
 </div>
 <div class="modal-footer" style="height:60px;">
-    <button type="button" class="btn btn-default">Close</button>
-    <button type="button" class="btn btn-success" ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-default" ng-click="fu.close()">Close</button>
+    <button type="button" class="btn btn-success" ng-click="fu.upload()">Upload</button>
 </div>

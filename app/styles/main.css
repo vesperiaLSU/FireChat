@@ -311,3 +311,35 @@ body {
   border: none;
   border-radius: 0;
 }
+
+#uploaderModalBody {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#uploaderModalHeader {
+  background-color: rgba(211, 211, 211, 0.5);
+}
+
+#preview {
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+#modalTitle {
+  display: inline-block;
+}
+
+#fileSize {
+  text-align: left;
+}
+
+.custom-modal {
+  top: 20%;
+}
+
+.removeIcon {
+  color: #d3d3d3;
+  float: right;
+  cursor: pointer;
+}
