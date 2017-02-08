@@ -16,7 +16,10 @@
 
             self.upload = function () {
                 $uibModalInstance.close({
-                    title: self.title
+                    name: self.title,
+                    size: self.size,
+                    comment: self.comments,
+                    data: self.data
                 });
             };
         }

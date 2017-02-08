@@ -2,7 +2,7 @@
 
 (function () {
     'use strict';
-    angular.module('angularfireChatApp').controller('MessageCtrl', function (profile, channelName, messages, FileUploader, $uibModal) {
+    angular.module('angularfireChatApp').controller('MessageCtrl', function (profile, channelName, messages, FileUploader, $uibModal, Storage) {
         var self = this;
         self.profile = profile;
         self.messages = messages;
@@ -23,6 +23,10 @@
             }]
         });
 
+        uploader.filters.push({
+            queueLimit: 5
+        });
+
         uploader.onAfterAddingFile = function (fileItem) {
             var isHtml5 = uploader.isHTML5;
 
@@ -34,7 +38,6 @@
                 backdrop: 'static',
                 keyboard: false,
                 windowClass: 'custom-modal',
-                // openedClass: 'always-scroll',
                 resolve: {
                     file: fileItem,
                     isHTML5: isHtml5
@@ -42,7 +45,7 @@
             });
 
             modalInstance.result.then(update => {
-                console.log(update + "modal resolved");
+                Storage.upload(update);
             }, () => {
                 console.log("modal dismissed");
             });

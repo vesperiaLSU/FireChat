@@ -2,8 +2,8 @@
 
 (function () {
     'use strict';
-    angular.module('angularfireChatApp').controller('ChannelCtrl', ['$state', 'Users', 'profile', 'channels', '$firebaseAuth',
-        function ($state, Users, profile, channels, $firebaseAuth) {
+    angular.module('angularfireChatApp').controller('ChannelCtrl', ['$state', 'Users', 'profile', 'channels', 'channelMessage', '$firebaseAuth', '$firebaseObject',
+        function ($state, Users, profile, channels, channelMessage, $firebaseAuth, $firebaseObject) {
 
             // get a reference to the channelCtrl
             var self = this;
@@ -11,6 +11,7 @@
             // get a reference to the resolved data
             self.profile = profile;
             self.channels = channels;
+            self.channelMessage = channelMessage;
             self.users = Users.all;
 
             self.newChannel = {
@@ -31,11 +32,14 @@
 
                 // change the user's status to offline and then save it before signing out
                 self.profile.online = null;
-                self.profile.$save().then(function () {
+                self.profile.$save().then(() => {
                     auth.$signOut();
                     $state.go('home');
+                    toastr.warning('You just signed out as ' + self.profile.displayName, 'Succeed!');
+                }, error => {
+                    toastr.error(error.message, 'Failed to sign out');
                 });
-                toastr.warning('You just signed out as ' + self.profile.displayName, 'Succeed!');
+
             };
 
             // create a new channel and then enter it
@@ -44,6 +48,23 @@
                     $state.go('channels.messages', {
                         channelId: ref.key
                     });
+                    toastr.success('You just created channel: ' + self.newChannel.name, 'Succeed!');
+                }, error => {
+                    toastr.error(error.message, 'Failed to create channel: ' + self.newChannel.name);
+                });
+            };
+
+            self.deleteChannel = function (channel) {
+                self.channels.$remove(channel).then(ref => {
+                    var deleted = self.channelMessage.$getRecord(channel.$id);
+                    self.channelMessage.$remove(deleted).then(ref => {
+                        toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
+                        $state.go('channels');
+                    }, error => {
+                        toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
+                    });
+                }, error => {
+                    toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
                 });
             };
         }

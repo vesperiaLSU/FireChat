@@ -24,6 +24,7 @@
     },
     "channelMessage": {
       "$channelId": {
+        ".write": "auth !== null",
         "$messageId": {
           ".write": "auth !== null && newData.child('uid').val() === auth.uid",
           ".validate": "newData.child('timestamp').exists()",

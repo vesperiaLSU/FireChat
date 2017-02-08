@@ -7,7 +7,7 @@
         apiKey: "AIzaSyC2tM3hbzyQjjUeZ5tboZAM6eaSKSxHMz0",
         authDomain: "firechat-d57d5.firebaseapp.com",
         databaseURL: "https://firechat-d57d5.firebaseio.com",
-        storageBucket: "",
+        storageBucket: "firechat-d57d5.appspot.com",
         messagingSenderId: "77056511474"
     };
     firebase.initializeApp(config);
@@ -39,7 +39,7 @@
                         Users: 'Users',
                         Channels: 'Channels',
                         channels: function (Channels) {
-                            return Channels.$loaded();
+                            return Channels.channels.$loaded();
                         },
                         profile: function ($state, Users, $firebaseAuthService) {
                             return $firebaseAuthService.$requireSignIn().then(user => {
@@ -54,6 +54,9 @@
                                     }, error => $state.go('home'));
                                 }
                             }, error => $state.go('home'));
+                        },
+                        channelMessage: function (Channels) {
+                            return Channels.channelMessage.$loaded();
                         }
                     }
                 })
