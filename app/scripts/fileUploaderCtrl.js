@@ -14,6 +14,9 @@
                 $uibModalInstance.dismiss('cancel');
             };
 
+            // disable the upload button if the file is being uploaded or is already uploaded
+            self.disabled = file.isUploading || file.isUploaded || file.isSuccess;
+
             self.upload = function () {
                 $uibModalInstance.close({
                     name: self.title,

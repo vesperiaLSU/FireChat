@@ -2,29 +2,39 @@
     <h1>{{ message.channelName }}</h1>
 </div>
 
+<div class="progressBar" ng-show="message.isUploading">
+    <uib-progressbar id="progressBar" class="progress-striped active" type="{{message.type}}">Processing uploaded file...
+        <i ng-show="message.isSuccess">Completed!</i>
+        <i ng-show="message.isPaused">Paused!</i>
+        <i ng-show="message.hasError">Has Error!</i>
+    </uib-progressbar>
+</div>
+
 <div class="message-wrap" ng-repeat="msg in message.messages">
-    <div ng-if="msg.uid !== message.profile.$id">
+    <div ng-if="msg.uid !== message.profile.$id" style="display: inline-flex;">
         <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
         <div class="message-info">
             <div class="user-name">
                 {{ channel.getDisplayName(msg.uid) }}
                 <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span>
             </div>
-            <div class="message-other">
-                {{ msg.body }}
+            <div class="message message-other" ng-style="{display: msg.url ? 'table-caption' : '-webkit-inline-box' }">
+                <img id="url" ng-if="msg.url" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" /> {{ msg.body }}
             </div>
         </div>
     </div>
-    <div ng-if="msg.uid === message.profile.$id" style="text-align:right">
-        <div class="message-info">
-            <div class="user-name">
-                <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
+    <div style="text-align: right">
+        <div ng-if="msg.uid === message.profile.$id" style="display: inline-flex">
+            <div class="message-info">
+                <div class="user-name">
+                    <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
+                </div>
+                <div class="message message-me" ng-style="{display: msg.url ? 'table-caption' : '-webkit-inline-box' }">
+                    <img id="url" ng-if="msg.url" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" /> {{ msg.body }}
+                </div>
             </div>
-            <div class="message-me">
-                {{ msg.body }}
-            </div>
+            <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
         </div>
-        <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
     </div>
 </div>
 

@@ -57,12 +57,14 @@
             self.deleteChannel = function (channel) {
                 self.channels.$remove(channel).then(ref => {
                     var deleted = self.channelMessage.$getRecord(channel.$id);
-                    self.channelMessage.$remove(deleted).then(ref => {
-                        toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
-                        $state.go('channels');
-                    }, error => {
-                        toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
-                    });
+                    if (deleted) {
+                        self.channelMessage.$remove(deleted).then(ref => {
+                            toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
+                            $state.go('channels');
+                        }, error => {
+                            toastr.error(error.message, 'Failed to delete messages for channel: ' + channel.name);
+                        });
+                    }
                 }, error => {
                     toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
                 });

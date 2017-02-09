@@ -1,34 +1,54 @@
-/* global firebase, angular */
+/* global firebase,angular,toastr */
 
 (function () {
     'use strict';
-    angular.module('angularfireChatApp').factory('Storage', ['$firebaseArray', function ($firebaseArray) {
+    angular.module('angularfireChatApp').factory('Storage', ['$q', 'Comments', function ($q, Comments) {
         var imagesRef = firebase.storage().ref().child('images');
-        var api = {
+        return {
             upload: function (file) {
+                var deferred = $q.defer();
                 var ref = imagesRef.child(file.name);
                 var uploadTask = ref.put(file.data);
                 uploadTask.on('state_changed', snapshot => {
-                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
-                    switch (snapshot.state) {
-                    case firebase.storage.TaskState.PAUSED:
-                        console.log('upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING:
-                        console.log('upload is running');
-                        break;
+                    if (snapshot.state === firebase.storage.TaskState.PAUSED) {
+                        deferred.resolve({
+                            isPaused: true,
+                            isSuccess: false,
+                            hasError: false
+                        });
                     }
                 }, error => {
-                    console.log("there is an error: " + error);
+                    // callback when erro occurs
+                    deferred.resolve({
+                        isPaused: false,
+                        isSuccess: false,
+                        hasError: true
+                    });
+                    switch (error.code) {
+                    case 'storage/unauthorized':
+                        toastr.error(error.message, 'Failed to upload');
+                        break;
+                    case 'storage/canceled':
+                        toastr.error(error.message, 'Failed to upload');
+                        break;
+                    case 'storage/unknown':
+                        toastr.error(error.message, 'Failed to upload');
+                        break;
+                    }
                 }, () => {
-                    var downloadURL = uploadTask.snapshot.downloadURL;
-                    console.log('download at: ' + downloadURL);
-                    var metaData = uploadTask.snapshot.metadata;
+                    // callback when completed
+                    // resolve the uploading task 1111
+                    deferred.resolve({
+                        isPaused: false,
+                        isSuccess: true,
+                        hasError: false,
+                        downloadURL: uploadTask.snapshot.downloadURL,
+                        comment: file.comment
+                    });
                 });
+
+                return deferred.promise;
             }
         };
-
-        return api;
     }]);
 }());
