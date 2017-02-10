@@ -317,11 +317,6 @@ body {
   border-radius: 0;
 }
 
-#uploaderModalBody {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
 #uploaderModalHeader {
   background-color: rgba(211, 211, 211, 0.5);
 }
@@ -343,9 +338,13 @@ body {
   top: 20%;
 }
 
+.pic-modal {
+  top: 20%;
+  right: 10%;
+}
+
 .removeIcon {
   color: #d3d3d3;
-  float: right;
   cursor: pointer;
 }
 
@@ -354,4 +353,20 @@ body {
   top: 70px;
   width: 78%;
   z-index: 999999;
+}
+
+.modal-dynamic {
+  display: flex;
+}
+
+#uploaderModalBody {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#downloadBtn {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  opacity: 0.8;
 }

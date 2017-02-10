@@ -43,7 +43,8 @@
                         isSuccess: true,
                         hasError: false,
                         downloadURL: uploadTask.snapshot.downloadURL,
-                        comment: file.comment
+                        comment: file.comment,
+                        name: file.name
                     });
                 });
 

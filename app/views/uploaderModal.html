@@ -1,36 +1,38 @@
-<div class="modal-header" id="uploaderModalHeader">
-    <h4 class="modal-title" id="modalTitle">Upload a file?</h4>
-    <a><i class="glyphicon glyphicon-remove removeIcon" ng-click="fu.close()"></i></a>
-</div>
-<div class="modal-body" id="uploaderModalBody">
-    <form class="form-horizontal">
-        <div class="col-sm-12">
-            <div id="preview">
-                <div ng-show="fu.isHTML5" ng-thumb="{ file: fu.data, height: 100 }"></div>
-            </div>
+<div>
+    <div class="modal-header" id="uploaderModalHeader">
+        <h4 class="modal-title" id="modalTitle">Upload a file?</h4>
+        <a><i class="glyphicon glyphicon-remove removeIcon" ng-click="fu.close()"></i></a>
+    </div>
+    <div class="modal-body" id="uploaderModalBody">
+        <form class="form-horizontal">
+            <div class="col-sm-12">
+                <div id="preview">
+                    <div ng-show="fu.isHTML5" ng-thumb="{ file: fu.data, height: 100 }"></div>
+                </div>
 
-            <div class="form-group">
-                <label for="title" class="col-sm-3 control-label">Title</label>
-                <div class="col-sm-9">
-                    <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="fu.title">
+                <div class="form-group">
+                    <label for="title" class="col-sm-3 control-label">Title</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="fu.title" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fileSize" class="col-sm-3 control-label">File Size</label>
+                    <label ng-show="fu.isHTML5" id="fileSize" class="col-sm-9 control-label" nowrap>{{fu.size/1024|number:2}}KB</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments" class="col-sm-3 control-label">Add Comment (optional)</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" rows="4" id="comments" placeholder="Comments..." maxlength="200" ng-model="fu.comments" />
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="fileSize" class="col-sm-3 control-label">File Size</label>
-                <label ng-show="fu.isHTML5" id="fileSize" class="col-sm-9 control-label" nowrap>{{fu.size/1024|number:2}}KB</label>
-            </div>
-
-            <div class="form-group">
-                <label for="comments" class="col-sm-3 control-label">Add Comment (optional)</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" rows="4" id="comments" placeholder="Comments..." maxlength="200" ng-model="fu.comments" />
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="modal-footer" style="height:60px;">
-    <button type="button" class="btn btn-default" ng-click="fu.close()">Close</button>
-    <button type="button" class="btn btn-success" ng-click="fu.upload()" ng-disabled="fu.disabled">Upload</button>
+        </form>
+    </div>
+    <div class="modal-footer" style="height:60px;">
+        <button type="button" class="btn btn-default" ng-click="fu.close()">Close</button>
+        <button type="button" class="btn btn-success" ng-click="fu.upload()" ng-disabled="fu.disabled">Upload</button>
+    </div>
 </div>

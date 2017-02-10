@@ -1,0 +1,11 @@
+<div>
+    <div class="modal-header" style="padding: 5px">
+        <div style="text-align: right">
+            <i class="glyphicon glyphicon-remove removeIcon" ng-click="pi.close()"></i>
+        </div>
+    </div>
+    <div class="modal-body" style="padding: 0" ng-mouseover="pi.showDownload = true" ng-mouseleave="pi.showDownload = false">
+        <button ng-show="pi.showDownload" class="btn btn-default btn-lg" id="downloadBtn" ng-click="pi.download()"><i class="glyphicon glyphicon-cloud-download"/>&nbsp;<span>Download</span></button>
+        <img ng-src="{{ pi.url }}" style="height: 490px" />
+    </div>
+</div>

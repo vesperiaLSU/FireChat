@@ -36,7 +36,7 @@
 
                 var modalInstance = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/uploaderModal.html',
+                    templateUrl: 'views/uploaderModal.html',
                     controller: 'fileUploaderCtrl as fu',
                     size: 'md',
                     backdrop: 'static',
@@ -57,7 +57,7 @@
                         if (self.isSuccess) {
                             self.type = 'success';
                             if (result.downloadURL) {
-                                sendImageMessage(result.downloadURL, result.comment);
+                                sendImageMessage(result.name, result.downloadURL, result.comment);
                             }
                         }
                         $timeout(() => {
@@ -73,23 +73,44 @@
                 });
             };
 
+            self.viewImage = function (fileName, url) {
+                $uibModal.open({
+                    animation: false,
+                    templateUrl: 'views/previewModal.html',
+                    controller: 'previewImageCtrl as pi',
+                    backdrop: true,
+                    keyboard: true,
+                    size: 'dynamic',
+                    windowClass: 'pic-modal',
+                    resolve: {
+                        file: function () {
+                            return {
+                                link: url,
+                                name: fileName
+                            };
+                        }
+                    }
+                });
+            };
+
             // send a message to the database
             self.sendMessage = function () {
-                sendMessage(self.profile.$id, self.message, null);
+                sendMessage(self.profile.$id, self.message, null, null);
             };
 
             // send image as a message to canvas
-            function sendImageMessage(url, comment) {
-                sendMessage(self.profile.$id, comment, url);
+            function sendImageMessage(name, url, comment) {
+                sendMessage(self.profile.$id, comment, name, url);
             }
 
             // helper function for send message to firebase database
-            function sendMessage(id, body, url) {
+            function sendMessage(id, body, fileName, url) {
                 if (body.length > 0 || url) {
                     self.messages.$add({
                         uid: id,
                         body: body,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
+                        filename: fileName,
                         url: url
                     }).then(() => {
                         // automatically scroll down to the bottom of the page when a new message is received

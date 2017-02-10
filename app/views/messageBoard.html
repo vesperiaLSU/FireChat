@@ -19,7 +19,7 @@
                 <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span>
             </div>
             <div class="message message-other" ng-style="{display: msg.url ? 'table-caption' : '-webkit-inline-box' }">
-                <img id="url" ng-if="msg.url" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" /> {{ msg.body }}
+                <img id="url" ng-if="msg.url && msg.filename" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" ng-click="message.viewImage(msg.filename, msg.url)" /> {{ msg.body }}
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                     <span class="timestamp">{{ msg.timestamp | date: 'short' }}</span> {{ channel.getDisplayName(msg.uid) }}
                 </div>
                 <div class="message message-me" ng-style="{display: msg.url ? 'table-caption' : '-webkit-inline-box' }">
-                    <img id="url" ng-if="msg.url" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" /> {{ msg.body }}
+                    <img id="url" ng-if="msg.url && msg.filename" style="height: 200px; cursor: pointer" ng-src="{{ msg.url }}" ng-click="message.viewImage(msg.filename, msg.url)" /> {{ msg.body }}
                 </div>
             </div>
             <img class="user-pic" ng-src="{{ channel.getGravatar(msg.uid) }}" />
@@ -45,7 +45,7 @@
                 <button class="btn btn-default dropdown-toggle" id="attachment" data-toggle="dropdown" type="button"><span class="glyphicon glyphicon-plus" /></button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <div id="btnImport" class="btn btn-default no-border">
+                        <div id="btnImport" class="btn btn-default no-border" popover-placement='auto top-left' popover-title='Supported file types:' uib-popover=".jpg .png .jpeg .bmp .gif" popover-trigger="'mouseenter'">
                             <i class="glyphicon glyphicon-hdd"></i>&nbsp;
                             <span>Share from computer</span>
                             <input id="fileUploader" type="file" nv-file-select uploader="message.uploader" multiple filters="fileType, fileSize, queueLimit">

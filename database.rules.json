@@ -27,10 +27,7 @@
         ".write": "auth !== null",
         "$messageId": {
           ".write": "auth !== null && newData.child('uid').val() === auth.uid",
-          ".validate": "newData.child('timestamp').exists()",
-          "body": {
-            ".validate": "newData.exists() && newData.val().length > 0"
-          }
+          ".validate": "newData.child('timestamp').exists()"
         }
       }
     },
@@ -40,10 +37,7 @@
           "$messageId": {
             ".read": "auth !== null && ($uid1 === auth.uid || $uid2 === auth.uid)",
             ".write": "auth !== null && newData.child('uid').val() === auth.uid",
-            ".validate": "$uid1 < $uid2 && newData.child('timestamp').exists()",
-            "body": {
-              ".validate": "newData.exists() && newData.val().length > 0"
-            }
+            ".validate": "$uid1 < $uid2 && newData.child('timestamp').exists()"
           }
         }
       }
