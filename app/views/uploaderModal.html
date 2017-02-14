@@ -1,10 +1,10 @@
 <div>
     <div class="modal-header" id="uploaderModalHeader">
         <h4 class="modal-title" id="modalTitle">Upload a file?</h4>
-        <a><i class="glyphicon glyphicon-remove removeIcon" ng-click="fu.close()"></i></a>
+        <a><i class="glyphicon glyphicon-remove" id="removeModal" ng-click="fu.close()"></i></a>
     </div>
     <div class="modal-body" id="uploaderModalBody">
-        <form class="form-horizontal">
+        <form ng-submit="fu.upload()" id="uploadForm" class="form-horizontal">
             <div class="col-sm-12">
                 <div id="preview">
                     <div ng-show="fu.isHTML5" ng-thumb="{ file: fu.data, height: 100 }"></div>
@@ -33,6 +33,6 @@
     </div>
     <div class="modal-footer" style="height:60px;">
         <button type="button" class="btn btn-default" ng-click="fu.close()">Close</button>
-        <button type="button" class="btn btn-success" ng-click="fu.upload()" ng-disabled="fu.disabled">Upload</button>
+        <button type="submit" class="btn btn-success" ng-disabled="fu.disabled" form="uploadForm">Upload</button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-/*global angular,firebase*/
+/*global $,angular,firebase*/
 
 (function () {
     'use strict';
@@ -7,6 +7,8 @@
             var self = this;
             self.profile = profile;
             self.messages = messages;
+            var messageContainingFile = $.grep(self.messages, msg => msg.file != null);
+            self.files = $.map(messageContainingFile, msg => msg.file);
             self.channelName = channelName;
             self.message = '';
             self.type = "info";
@@ -48,16 +50,16 @@
                     }
                 });
 
-                modalInstance.result.then(update => {
+                modalInstance.result.then(file => {
                     self.isUploading = true;
-                    Storage.upload(update).then(result => {
+                    Storage.upload(self.profile.$id, file).then(result => {
                         self.isSuccess = result.isSuccess;
                         self.isPaused = result.isPaused;
                         self.hasError = result.hasError;
                         if (self.isSuccess) {
                             self.type = 'success';
-                            if (result.downloadURL) {
-                                sendImageMessage(result.name, result.downloadURL, result.comment);
+                            if (result.file) {
+                                sendImageMessage(result.file);
                             }
                         }
                         $timeout(() => {
@@ -73,8 +75,8 @@
                 });
             };
 
-            self.viewImage = function (fileName, url) {
-                $uibModal.open({
+            self.viewImage = function (file) {
+                var modalInstance = $uibModal.open({
                     animation: false,
                     templateUrl: 'views/previewModal.html',
                     controller: 'previewImageCtrl as pi',
@@ -83,35 +85,49 @@
                     size: 'dynamic',
                     windowClass: 'pic-modal',
                     resolve: {
-                        file: function () {
-                            return {
-                                link: url,
-                                name: fileName
-                            };
+                        data: {
+                            files: self.files,
+                            currentFile: file
                         }
                     }
+                });
+
+                modalInstance.result.then(result => {
+                    var currentMessage = self.messages.find(msg => {
+                        return msg.file && msg.file.id === result.id;
+                    });
+
+                    currentMessage.file.comments.push({
+                        uid: self.profile.$id,
+                        value: result.comment
+                    });
+
+                    self.messages.$save(currentMessage).then(ref => {
+                        console.log(ref);
+                    });
+                }, () => {
+                    console.log("modal dismissed");
                 });
             };
 
             // send a message to the database
             self.sendMessage = function () {
-                sendMessage(self.profile.$id, self.message, null, null);
+                sendMessage(self.profile.$id, self.message, null);
             };
 
             // send image as a message to canvas
-            function sendImageMessage(name, url, comment) {
-                sendMessage(self.profile.$id, comment, name, url);
+            function sendImageMessage(file) {
+                sendMessage(self.profile.$id, file.comments.length > 0 ? '"' + file.comments[0].value + '"' : '', file);
             }
 
             // helper function for send message to firebase database
-            function sendMessage(id, body, fileName, url) {
-                if (body.length > 0 || url) {
+            function sendMessage(id, body, file) {
+                if (body.length > 0 || file) {
                     self.messages.$add({
                         uid: id,
                         body: body,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        filename: fileName,
-                        url: url
+                        file: file
                     }).then(() => {
                         // automatically scroll down to the bottom of the page when a new message is received
                         var objDiv = document.getElementById("messageBoard");

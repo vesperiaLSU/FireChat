@@ -1,11 +1,61 @@
 <div>
-    <div class="modal-header" style="padding: 5px">
-        <div style="text-align: right">
-            <i class="glyphicon glyphicon-remove removeIcon" ng-click="pi.close()"></i>
-        </div>
-    </div>
     <div class="modal-body" style="padding: 0" ng-mouseover="pi.showDownload = true" ng-mouseleave="pi.showDownload = false">
-        <button ng-show="pi.showDownload" class="btn btn-default btn-lg" id="downloadBtn" ng-click="pi.download()"><i class="glyphicon glyphicon-cloud-download"/>&nbsp;<span>Download</span></button>
-        <img ng-src="{{ pi.url }}" style="height: 490px" />
+        <i class="glyphicon glyphicon-remove" id="removeIcon" ng-click="pi.close()"></i>
+        <div type="button" class="btn btn-default btn-lg col-sm-12" id="dashboard">
+            <div class="col-sm-3">
+                <span class="glyphicon glyphicon-arrow-left" style="cursor: pointer" ng-click="pi.prev()" data-toggle="tooltip" data-placement="bottom" title="Previous"></span>
+            </div>
+            <div class="col-sm-3">
+                <span class="glyphicon glyphicon-arrow-right" style="cursor: pointer" ng-click="pi.next()" data-toggle="tooltip" data-placement="bottom" title="Next"></span>
+            </div>
+            <div class="col-sm-3">
+                <span class="glyphicon glyphicon-cloud-download" ng-click="pi.download()" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="Save"></span>
+            </div>
+            <div class="col-sm-3">
+                <div class="dropdown">
+                    <span class="glyphicon glyphicon-option-horizontal dropdown-toggle" data-toggle="dropdown" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="More Actions"></span>
+                    <ul class="dropdown-menu" style="padding: 5px" role="menu">
+                        <li class="actionPoint" ng-click="pi.addComment()">
+                            <span>Add Comment</span>
+                        </li>
+                        <li class="actionPoint">
+                            <span>View Comments</span>
+                        </li>
+                        <li class="divider">
+                        </li>
+                        <li class="actionPoint" id="deletePic">
+                            <span>Delete Picture</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <img ng-src="{{ pi.url }}" style="height: 600px" />
+    </div>
+    <div ng-show="pi.showCommentSection" class="modal-footer" style="display: inline-table">
+        <input id="commentSection" type="text" class="form-control" ng-model="pi.commentTxt" placeholder="Add a comment...">
+        <span class="input-group-btn">
+            <button class="btn btn-success" ng-click="pi.postComment()">Add Comment</button>
+        </span>
     </div>
 </div>
+
+<script type="text/javascript">
+    /*global $*/
+    $(function () {
+        $('.actionPoint').hover(function () {
+            if ($(this).attr('id') === 'deletePic') {
+                $(this).addClass('btn-danger');
+            }
+            else {
+                $(this).addClass('btn-info');
+            }
+        }, function () {
+            $(this).removeClass('btn-danger');
+            $(this).removeClass('btn-info');
+        });
+    });
+</script>
+
+<!--ng-show="pi.showDownload"-->

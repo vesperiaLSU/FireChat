@@ -2,10 +2,10 @@
 
 (function () {
     'use strict';
-    angular.module('angularfireChatApp').factory('Storage', ['$q', 'Comments', function ($q, Comments) {
+    angular.module('angularfireChatApp').factory('Storage', ['$q', function ($q) {
         var imagesRef = firebase.storage().ref().child('images');
         return {
-            upload: function (file) {
+            upload: function (uid, file) {
                 var deferred = $q.defer();
                 var ref = imagesRef.child(file.name);
                 var uploadTask = ref.put(file.data);
@@ -42,9 +42,15 @@
                         isPaused: false,
                         isSuccess: true,
                         hasError: false,
-                        downloadURL: uploadTask.snapshot.downloadURL,
-                        comment: file.comment,
-                        name: file.name
+                        file: {
+                            id: uploadTask.snapshot.metadata.generation,
+                            downloadURL: uploadTask.snapshot.downloadURL,
+                            comments: file.comment ? [{
+                                uid: uid,
+                                value: file.comment
+                            }] : [],
+                            name: file.name
+                        }
                     });
                 });
 

@@ -339,13 +339,26 @@ body {
 }
 
 .pic-modal {
-  top: 20%;
-  right: 10%;
+  top: 10%;
+  right: 15%;
 }
 
-.removeIcon {
+#removeIcon {
   color: #d3d3d3;
   cursor: pointer;
+  font-size: 18px;
+  position: absolute;
+  right: 2%;
+  top: 3%;
+  opacity: 0.8;
+  border: 2px #d3d3d3 solid;
+  border-radius: 10px;
+}
+
+#removeModal {
+  position: absolute;
+  right: 3%;
+  top: 4%;
 }
 
 .progressBar {
@@ -364,9 +377,24 @@ body {
   overflow-y: auto;
 }
 
-#downloadBtn {
+#dashboard {
   position: absolute;
-  right: 3%;
-  top: 5%;
-  opacity: 0.8;
+  right: 35%;
+  bottom: 5%;
+  cursor: default;
+  width: 25%;
+  border-radius: 20px;
+}
+
+.actionPoint {
+  padding: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#url {
+  height: 200px;
+  cursor: zoom-in;
+  padding-bottom: 5px;
 }
