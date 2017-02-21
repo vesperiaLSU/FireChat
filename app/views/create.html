@@ -3,8 +3,9 @@
 </div>
 
 <form ng-submit="channel.createChannel()">
+    <div ng-if="channel.emptyChannelError" class="alert alert-danger error-label">Channel name cannot be empty.</div>
     <div style="display:inline-flex;" class="input-group">
-        <input id="channelName" type="text" class="form-control" placeholder="Channel Name" ng-model="channel.newChannel.name" />
+        <input id="channelName" type="text" class="form-control" placeholder="Channel Name" ng-change="channel.nameChange()" maxlength="20" ng-model="channel.newChannel.name" />
         <button type="submit" class="no-radius btn">Create</button>
     </div>
 </form>

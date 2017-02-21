@@ -3,12 +3,12 @@
 (function () {
     'use strict';
     angular.module('angularfireChatApp').controller('MessageCtrl',
-        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout) {
-            var self = this;
+        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, $scope, Comments, Files) {
+            var self = this,
+                files = [];
+
             self.profile = profile;
             self.messages = messages;
-            var messageContainingFile = $.grep(self.messages, msg => msg.file != null);
-            self.files = $.map(messageContainingFile, msg => msg.file);
             self.channelName = channelName;
             self.message = '';
             self.type = "info";
@@ -71,9 +71,17 @@
                         }, 1000);
                     });
                 }, () => {
-                    console.log("modal dismissed");
+                    // modal dismissed
                 });
             };
+
+            // subscribe to messages changes, and update the files whenever a new one is posted
+            $scope.$watchCollection(function () {
+                return self.messages;
+            }, function (newValue, oldValue) {
+                var messageContainingFile = $.grep(newValue, msg => msg.file != null);
+                files = $.map(messageContainingFile, msg => msg.file);
+            });
 
             self.viewImage = function (file) {
                 var modalInstance = $uibModal.open({
@@ -86,9 +94,11 @@
                     windowClass: 'pic-modal',
                     resolve: {
                         data: {
-                            files: self.files,
+                            uid: self.profile.$id,
+                            files: files,
                             currentFile: file
-                        }
+                        },
+                        comments: Comments(file.id).$loaded()
                     }
                 });
 
@@ -97,16 +107,22 @@
                         return msg.file && msg.file.id === result.id;
                     });
 
+                    if (!currentMessage.file.comments) {
+                        currentMessage.file.comments = [];
+                        currentMessage.body = '"' + result.comment + '"';
+                    }
+
                     currentMessage.file.comments.push({
                         uid: self.profile.$id,
-                        value: result.comment
+                        value: result.comment,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
                     });
 
                     self.messages.$save(currentMessage).then(ref => {
                         console.log(ref);
                     });
                 }, () => {
-                    console.log("modal dismissed");
+                    // modal dismissed
                 });
             };
 
@@ -117,7 +133,7 @@
 
             // send image as a message to canvas
             function sendImageMessage(file) {
-                sendMessage(self.profile.$id, file.comments.length > 0 ? '"' + file.comments[0].value + '"' : '', file);
+                sendMessage(self.profile.$id, file.comment ? '"' + file.comment.body + '"' : '', file);
             }
 
             // helper function for send message to firebase database
@@ -127,12 +143,39 @@
                         uid: id,
                         body: body,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        file: file
-                    }).then(() => {
+                        file: file ? {
+                            id: file.id,
+                            downloadURL: file.downloadURL,
+                            name: file.name,
+                            likes: file.likes,
+                            uid: file.uid,
+                            timestamp: file.timestamp
+                        } : null
+                    }).then(ref => {
                         // automatically scroll down to the bottom of the page when a new message is received
                         var objDiv = document.getElementById("messageBoard");
                         objDiv.scrollTop = objDiv.scrollHeight;
                         self.message = '';
+                        if (file) {
+                            // save comments for a particular file id
+                            Comments(file.id).$loaded().then(comments => {
+                                comments.$add(file.comment).then(ref => {
+                                    // comments added
+                                });
+                            });
+                            // save files for a particular uid
+                            Files(file.uid).$loaded().then(myFiles => {
+                                myFiles.$add({
+                                    id: file.id,
+                                    downloadURL: file.downloadURL,
+                                    name: file.name,
+                                    likes: file.likes,
+                                    timestamp: file.timestamp
+                                }).then(ref => {
+                                    // files added
+                                });
+                            });
+                        }
                     });
                 }
             }

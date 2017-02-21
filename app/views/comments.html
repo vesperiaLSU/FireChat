@@ -1,0 +1,51 @@
+<div>
+    <div class="modal-header" id="uploaderModalHeader">
+        <h4 class="modal-title" id="modalTitle">Comments</h4>
+        <a><i class="glyphicon glyphicon-remove" id="removeComment" ng-click="cm.close()"></i></a>
+    </div>
+    <div class="modal-body message-pane" id="commentModal">
+        <div style="padding:10px 0">
+            <div id="postedByDiv">
+                <img class="user-pic" ng-src="{{ cm.getGravatar(cm.postedBy) }}" />
+                <div style="padding: 0 5px">
+                    <div class="user-name">
+                        {{ cm.getDisplayName(cm.postedBy) }}
+                    </div>
+                    <strong><span class="timestamp">Posted image at {{ cm.postedDate | date: 'short' }}</span></strong>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <img id="url" ng-src="{{ cm.downloadURL }}" />
+            </div>
+        </div>
+        <div ng-if="cm.comments.length === 0" class="emptyComment"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;Be the first to leave a comment</div>
+        <div ng-repeat="comment in cm.comments | reverse" class="message-wrap">
+            <div style="display: inline-flex;">
+                <img class="user-pic" ng-src="{{ cm.getGravatar(comment.uid) }}" />
+                <div class="message-info">
+                    <div class="user-name">
+                        {{ cm.getDisplayName(comment.uid) }}
+                        <span class="timestamp"> {{ comment.timestamp | date: 'short' }}</span>
+                    </div>
+                    <div class="commentBody">
+                        {{ comment.body }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div ng-if="cm.emptyComment" class="alert alert-danger error-label">Comment cannot be empty.</div>
+        <form ng-submit="cm.postComment()" class="col-sm-12 no-padding">
+            <div class="col-sm-1 no-padding" id="commentAvatar">
+                <img class="user-pic" ng-src="{{ cm.getGravatar(cm.uid) }}" />
+            </div>
+            <div class="col-sm-11 no-padding" id="commentDiv">
+                <input id="commentSection" type="text" class="form-control" ng-change="cm.commentChange()" ng-model="cm.commentTxt" maxlength="200" placeholder="Add a comment...">
+                <span class="input-group-btn">
+            <button class="btn btn-success" type="submit">Add Comment</button>
+            </span>
+            </div>
+        </form>
+    </div>
+</div>

@@ -215,6 +215,22 @@ body {
   margin: 0 0 15px;
 }
 
+#commentModal {
+  width: 100%;
+  background-color: #fff;
+  padding: 0 20px 20px 20px;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+.commentBody {
+  padding: 0;
+  font-size: medium;
+  display: inline-block;
+  font-family: Arial;
+  text-align: left;
+}
+
 .authBtn {
   width: 60%;
   position: relative;
@@ -317,6 +333,13 @@ body {
   border-radius: 0;
 }
 
+.emptyComment {
+  font-size: 16px;
+  font-family: Arial;
+  color: gray;
+  padding-top: 15px;
+}
+
 #uploaderModalHeader {
   background-color: rgba(211, 211, 211, 0.5);
 }
@@ -338,9 +361,18 @@ body {
   top: 20%;
 }
 
+.confirm-modal {
+  top: 30%;
+}
+
 .pic-modal {
   top: 10%;
-  right: 15%;
+  width: 100%;
+}
+
+.comment-modal {
+  top: 5%;
+  left: 5%;
 }
 
 #removeIcon {
@@ -361,6 +393,11 @@ body {
   top: 4%;
 }
 
+#removeComment {
+  position: relative;
+  left: 80%;
+}
+
 .progressBar {
   position: fixed;
   top: 70px;
@@ -369,7 +406,7 @@ body {
 }
 
 .modal-dynamic {
-  display: flex;
+  display: table;
 }
 
 #uploaderModalBody {
@@ -393,8 +430,60 @@ body {
   border-radius: 5px;
 }
 
+.modal-body #url {
+  height: 200px;
+  padding: 5px 0;
+  cursor: default;
+}
+
+.modal-dynamic .modal-content {
+  background: none;
+}
+
 #url {
   height: 200px;
   cursor: zoom-in;
   padding-bottom: 5px;
+}
+
+#postedByDiv {
+  display: inline-flex;
+  position: relative;
+  left: 20%;
+}
+
+.error-label {
+  padding: 5px !important;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.modal-footer .user-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.modal-body .user-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+#commentAvatar {
+  width: 5%;
+  margin-right: 25px;
+}
+
+#commentDiv {
+  display: inline-table;
+  width: 90%;
 }

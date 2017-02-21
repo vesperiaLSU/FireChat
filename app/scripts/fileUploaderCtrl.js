@@ -7,6 +7,7 @@
             var self = this;
             self.title = file.file.name;
             self.size = file.file.size;
+            self.hasError = false;
             self.comments = "";
             self.data = file._file;
             self.isHTML5 = isHTML5;
@@ -17,13 +18,25 @@
             // disable the upload button if the file is being uploaded or is already uploaded
             self.disabled = file.isUploading || file.isUploaded || file.isSuccess;
 
+            self.titleChange = function () {
+                if (self.title && self.title.trim().length > 0) {
+                    self.hasError = false;
+                }
+            };
+
             self.upload = function () {
-                $uibModalInstance.close({
-                    name: self.title,
-                    size: self.size,
-                    comment: self.comments,
-                    data: self.data
-                });
+                if (self.title) {
+                    self.hasError = false;
+                    $uibModalInstance.close({
+                        name: self.title,
+                        size: self.size,
+                        comment: self.comments,
+                        data: self.data
+                    });
+                }
+                else {
+                    self.hasError = true;
+                }
             };
         }
     ]);

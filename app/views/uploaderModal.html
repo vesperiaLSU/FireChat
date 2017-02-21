@@ -4,6 +4,7 @@
         <a><i class="glyphicon glyphicon-remove" id="removeModal" ng-click="fu.close()"></i></a>
     </div>
     <div class="modal-body" id="uploaderModalBody">
+        <div ng-show="fu.hasError" class="alert alert-danger error-label">Title cannot be empty.</div>
         <form ng-submit="fu.upload()" id="uploadForm" class="form-horizontal">
             <div class="col-sm-12">
                 <div id="preview">
@@ -13,7 +14,7 @@
                 <div class="form-group">
                     <label for="title" class="col-sm-3 control-label">Title</label>
                     <div class="col-sm-9">
-                        <input class="form-control" id="title" placeholder="Title" type="text" maxlength="50" ng-model="fu.title" required>
+                        <input class="form-control" id="title" placeholder="Title" name="title" type="text" maxlength="50" ng-model="fu.title" ng-change="fu.titleChange()">
                     </div>
                 </div>
 
@@ -33,6 +34,6 @@
     </div>
     <div class="modal-footer" style="height:60px;">
         <button type="button" class="btn btn-default" ng-click="fu.close()">Close</button>
-        <button type="submit" class="btn btn-success" ng-disabled="fu.disabled" form="uploadForm">Upload</button>
+        <button type="submit" class="btn btn-success" form="uploadForm">Upload</button>
     </div>
 </div>

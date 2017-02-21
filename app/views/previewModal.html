@@ -1,7 +1,7 @@
 <div>
     <div class="modal-body" style="padding: 0" ng-mouseover="pi.showDownload = true" ng-mouseleave="pi.showDownload = false">
         <i class="glyphicon glyphicon-remove" id="removeIcon" ng-click="pi.close()"></i>
-        <div type="button" class="btn btn-default btn-lg col-sm-12" id="dashboard">
+        <div type="button" ng-show="pi.showDownload" class="btn btn-default btn-lg col-sm-12" id="dashboard">
             <div class="col-sm-3">
                 <span class="glyphicon glyphicon-arrow-left" style="cursor: pointer" ng-click="pi.prev()" data-toggle="tooltip" data-placement="bottom" title="Previous"></span>
             </div>
@@ -15,15 +15,13 @@
                 <div class="dropdown">
                     <span class="glyphicon glyphicon-option-horizontal dropdown-toggle" data-toggle="dropdown" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="More Actions"></span>
                     <ul class="dropdown-menu" style="padding: 5px" role="menu">
-                        <li class="actionPoint" ng-click="pi.addComment()">
-                            <span>Add Comment</span>
+                        <li class="actionPoint" ng-click="pi.viewComments()">
+                            <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
+                            <span ng-if="pi.commentCount === 0">Add Comment</span>
                         </li>
-                        <li class="actionPoint">
-                            <span>View Comments</span>
+                        <li ng-show="pi.showDelete" class="divider">
                         </li>
-                        <li class="divider">
-                        </li>
-                        <li class="actionPoint" id="deletePic">
+                        <li ng-show="pi.showDelete" class="actionPoint" id="deletePic">
                             <span>Delete Picture</span>
                         </li>
                     </ul>
@@ -31,13 +29,7 @@
 
             </div>
         </div>
-        <img ng-src="{{ pi.url }}" style="height: 600px" />
-    </div>
-    <div ng-show="pi.showCommentSection" class="modal-footer" style="display: inline-table">
-        <input id="commentSection" type="text" class="form-control" ng-model="pi.commentTxt" placeholder="Add a comment...">
-        <span class="input-group-btn">
-            <button class="btn btn-success" ng-click="pi.postComment()">Add Comment</button>
-        </span>
+        <img ng-src="{{ pi.url }}" style="max-height: 700px" />
     </div>
 </div>
 
@@ -57,5 +49,3 @@
         });
     });
 </script>
-
-<!--ng-show="pi.showDownload"-->

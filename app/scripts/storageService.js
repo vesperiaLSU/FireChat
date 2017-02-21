@@ -45,11 +45,15 @@
                         file: {
                             id: uploadTask.snapshot.metadata.generation,
                             downloadURL: uploadTask.snapshot.downloadURL,
-                            comments: file.comment ? [{
+                            comment: file.comment ? {
                                 uid: uid,
-                                value: file.comment
-                            }] : [],
-                            name: file.name
+                                body: file.comment,
+                                timestamp: firebase.database.ServerValue.TIMESTAMP
+                            } : null,
+                            name: file.name,
+                            likes: 0,
+                            uid: uid,
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
                         }
                     });
                 });

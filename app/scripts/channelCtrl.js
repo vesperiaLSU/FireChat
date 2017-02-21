@@ -2,8 +2,16 @@
 
 (function () {
     'use strict';
-    angular.module('angularfireChatApp').controller('ChannelCtrl', ['$state', 'Users', 'profile', 'channels', 'channelMessage', '$firebaseAuth', '$firebaseObject',
-        function ($state, Users, profile, channels, channelMessage, $firebaseAuth, $firebaseObject) {
+    angular.module('angularfireChatApp').controller('ChannelCtrl', [
+        '$state',
+        'Users',
+        'profile',
+        'channels',
+        'channelMessage',
+        '$firebaseAuth',
+        '$firebaseObject',
+        'Confirm',
+        function ($state, Users, profile, channels, channelMessage, $firebaseAuth, $firebaseObject, Confirm) {
 
             // get a reference to the channelCtrl
             var self = this;
@@ -13,6 +21,7 @@
             self.channels = channels;
             self.channelMessage = channelMessage;
             self.users = Users.all;
+            self.emptyChannelError = false;
 
             self.newChannel = {
                 name: '',
@@ -42,32 +51,55 @@
 
             };
 
+            self.nameChange = function () {
+                if (self.newChannel.name && self.newChannel.name.length > 0) {
+                    self.emptyChannelError = false;
+                }
+            };
+
             // create a new channel and then enter it
             self.createChannel = function () {
-                self.channels.$add(self.newChannel).then(ref => {
-                    $state.go('channels.messages', {
-                        channelId: ref.key
+                if (self.newChannel.name) {
+                    self.emptyChannelError = false;
+                    self.channels.$add(self.newChannel).then(ref => {
+                        $state.go('channels.messages', {
+                            channelId: ref.key
+                        });
+                        toastr.success('You just created channel: ' + self.newChannel.name, 'Succeed!');
+                    }, error => {
+                        toastr.error(error.message, 'Failed to create channel: ' + self.newChannel.name);
                     });
-                    toastr.success('You just created channel: ' + self.newChannel.name, 'Succeed!');
-                }, error => {
-                    toastr.error(error.message, 'Failed to create channel: ' + self.newChannel.name);
-                });
+                }
+                else {
+                    self.emptyChannelError = true;
+                }
             };
 
             self.deleteChannel = function (channel) {
-                self.channels.$remove(channel).then(ref => {
-                    var deleted = self.channelMessage.$getRecord(channel.$id);
-                    if (deleted) {
-                        self.channelMessage.$remove(deleted).then(ref => {
-                            toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
-                            $state.go('channels');
-                        }, error => {
-                            toastr.error(error.message, 'Failed to delete messages for channel: ' + channel.name);
-                        });
-                    }
-                }, error => {
-                    toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
-                });
+                var callback = function () {
+                    self.channels.$remove(channel).then(ref => {
+                        var deleted = self.channelMessage.$getRecord(channel.$id);
+                        if (deleted) {
+                            self.channelMessage.$remove(deleted).then(ref => {
+                                toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
+                                $state.go('channels');
+                            }, error => {
+                                toastr.error(error.message, 'Failed to delete messages for channel: ' + channel.name);
+                            });
+                        }
+                    }, error => {
+                        toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
+                    });
+                };
+
+                Confirm.openModal(
+                    'Delete Channel: ' + channel.name + ' ?',
+                    'Channel that has been deleted cannot be restored, and all conversations from this channel will ' +
+                    'be deleted as well (pictures shared can still be retrieved under Options/MyFiles). Are you sure you want to delete?',
+                    'Delete',
+                    'Cancel',
+                    callback
+                );
             };
         }
     ]);

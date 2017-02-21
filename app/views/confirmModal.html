@@ -1,0 +1,14 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modalTitle">{{ cf.title }}</h4>
+    </div>
+    <div class="modal-body" id="uploaderModalBody">
+        <div class="alert alert-warning">
+            <span><strong>Warning!</strong>&nbsp;{{ cf.description }}</span>
+        </div>
+        <div style="text-align: center">
+            <button class="btn btn-danger" ng-click="cf.confirm()">{{ cf.yesBtn }}</button>
+            <button class="btn btn-default" ng-click="cf.cancel()" style="margin-left: 20px">{{ cf.noBtn }}</button>
+        </div>
+    </div>
+</div>
