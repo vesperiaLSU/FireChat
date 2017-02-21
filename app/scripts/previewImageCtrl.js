@@ -1,4 +1,4 @@
-/*global $,angular*/
+/*global $,angular,toastr*/
 
 (function () {
     'use strict';
@@ -10,7 +10,9 @@
         "$uibModal",
         "Comments",
         "$scope",
-        function ($uibModalInstance, data, comments, FileSaver, $uibModal, Comments, $scope) {
+        "Confirm",
+        "Files",
+        function ($uibModalInstance, data, comments, FileSaver, $uibModal, Comments, $scope, Confirm, Files) {
             var self = this,
                 allFiles = data.files,
                 fileName = '',
@@ -79,7 +81,7 @@
                             currentFile: self.currentFile,
                             uid: data.uid
                         },
-                        comments: Comments(self.currentFile.id).$loaded()
+                        comments: Comments.forFile(self.currentFile.id).$loaded()
                     }
                 });
 
@@ -90,15 +92,53 @@
                 });
             };
 
+            self.deletePic = function () {
+                var callback = function () {
+                    // delete all comments associated with this file
+                    Comments.forObj(self.currentFile.id).$loaded().then(ref => {
+                        ref.$remove().then(ref => {
+                            // comments removed for this file
+                        }, error => toastr.error(error.message, 'Failed to delete comments for file: ' + self.currentFile.name));
+                    }, error => toastr.error(error.message, 'Failed to load comments for file: ' + self.currentFile.name));
+
+                    // delete current file from the user's file archive
+                    Files(data.uid).$loaded().then(ref => {
+                        var toDelete = ref.find(file => {
+                            return file.id === self.currentFile.id;
+                        });
+
+                        ref.$remove(toDelete).then(ref => {
+                            // file deleted
+                        }, error => toastr.error(error.message, 'Failed to delete file: ' + self.currentFile.name));
+                    }, error => toastr.error(error.message, 'Failed to load files for user'));
+
+                    // send current file's id back to message ctrl to delete the message
+                    // that contains this file
+                    $uibModalInstance.close({
+                        fileId: self.currentFile.id,
+                        name: self.currentFile.name
+                    });
+                };
+
+                Confirm.openModal(
+                    'Delete Picture: ' + self.currentFile.name + ' ?',
+                    'File that has been deleted cannot be restored, and all comments associated with this file will ' +
+                    'be deleted as well. Are you sure you want to delete?',
+                    'Delete',
+                    'Cancel',
+                    callback
+                );
+            };
+
             // helper to update preview modal
             function updatePreview(currentFile) {
                 self.url = currentFile.downloadURL;
                 self.showDelete = currentFile.uid === data.uid;
                 fileName = currentFile.name;
-                Comments(currentFile.id).$loaded().then(ret => {
+                Comments.forFile(currentFile.id).$loaded().then(ret => {
                     self.comments = ret;
                     self.commentCount = self.comments.length;
-                });
+                }, error => toastr.error(error.message, 'Failed to load comments for file: ' + currentFile.name));
             }
         }
     ]);

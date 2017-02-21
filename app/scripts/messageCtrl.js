@@ -1,4 +1,4 @@
-/*global $,angular,firebase*/
+/*global $,angular,firebase,toastr*/
 
 (function () {
     'use strict';
@@ -98,29 +98,18 @@
                             files: files,
                             currentFile: file
                         },
-                        comments: Comments(file.id).$loaded()
+                        comments: Comments.forFile(file.id).$loaded()
                     }
                 });
 
-                modalInstance.result.then(result => {
-                    var currentMessage = self.messages.find(msg => {
-                        return msg.file && msg.file.id === result.id;
+                modalInstance.result.then(ret => {
+                    var messageToDelete = self.messages.find(msg => {
+                        return msg.file && msg.file.id === ret.fileId;
                     });
 
-                    if (!currentMessage.file.comments) {
-                        currentMessage.file.comments = [];
-                        currentMessage.body = '"' + result.comment + '"';
-                    }
-
-                    currentMessage.file.comments.push({
-                        uid: self.profile.$id,
-                        value: result.comment,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    });
-
-                    self.messages.$save(currentMessage).then(ref => {
-                        console.log(ref);
-                    });
+                    self.messages.$remove(messageToDelete).then(ref => {
+                        toastr.success('Picture deleted: ' + ret.name, 'Succeed!');
+                    }, error => toastr.error(error.message, 'Failed to delete message: ' + messageToDelete.$id));
                 }, () => {
                     // modal dismissed
                 });
@@ -158,11 +147,11 @@
                         self.message = '';
                         if (file) {
                             // save comments for a particular file id
-                            Comments(file.id).$loaded().then(comments => {
+                            Comments.forFile(file.id).$loaded().then(comments => {
                                 comments.$add(file.comment).then(ref => {
                                     // comments added
-                                });
-                            });
+                                }, error => toastr.error(error.message, 'Failed to add comment for file: ' + file.name));
+                            }, error => toastr.error(error.message, 'Failed to load comment for file: ' + file.name));
                             // save files for a particular uid
                             Files(file.uid).$loaded().then(myFiles => {
                                 myFiles.$add({
@@ -173,10 +162,10 @@
                                     timestamp: file.timestamp
                                 }).then(ref => {
                                     // files added
-                                });
-                            });
+                                }, error => toastr.error(error.message, 'Failed to add file: ' + file.name));
+                            }, error => toastr.error(error.message, 'Failed to load files'));
                         }
-                    });
+                    }, error => toastr.error(error.message, 'Failed to send message'));
                 }
             }
         });

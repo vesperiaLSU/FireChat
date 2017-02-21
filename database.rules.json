@@ -31,6 +31,16 @@
         }
       }
     },
+    "comments": {
+      "$fileId": {
+        ".write": "auth !== null"
+      }
+    },
+    "files": {
+      "$uid": {
+        ".write": "auth !== null"
+      }
+    },
     "userMessage": {
       "$uid1": {
         "$uid2": {
