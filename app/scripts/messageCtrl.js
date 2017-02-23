@@ -3,7 +3,7 @@
 (function () {
     'use strict';
     angular.module('angularfireChatApp').controller('MessageCtrl',
-        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, $scope, Comments, Files) {
+        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, Comments, Files, $scope, $uibModalStack) {
             var self = this,
                 files = [];
 
@@ -83,7 +83,13 @@
                 files = $.map(messageContainingFile, msg => msg.file);
             });
 
-            self.viewImage = function (file) {
+            self.messages.$watch(change => {
+                if (change.event === 'child_removed' && $('#previewModal' + change.key).length > 0) {
+                    $uibModalStack.dismissAll();
+                }
+            });
+
+            self.viewImage = function (message) {
                 var modalInstance = $uibModal.open({
                     animation: false,
                     templateUrl: 'views/previewModal.html',
@@ -96,9 +102,9 @@
                         data: {
                             uid: self.profile.$id,
                             files: files,
-                            currentFile: file
+                            currentFile: message.file
                         },
-                        comments: Comments.forFile(file.id).$loaded()
+                        comments: Comments.forFile(message.file.id).$loaded()
                     }
                 });
 
@@ -112,6 +118,12 @@
                     }, error => toastr.error(error.message, 'Failed to delete message: ' + messageToDelete.$id));
                 }, () => {
                     // modal dismissed
+                });
+
+                modalInstance.rendered.then(ret => {
+                    if ($('.modal').length > 0 && !$('.modal').attr('id')) {
+                        $('.modal').attr('id', 'previewModal' + message.$id);
+                    }
                 });
             };
 
