@@ -74,33 +74,6 @@
                     self.emptyChannelError = true;
                 }
             };
-
-            self.deleteChannel = function (channel) {
-                var callback = function () {
-                    self.channels.$remove(channel).then(ref => {
-                        var deleted = self.channelMessage.$getRecord(channel.$id);
-                        if (deleted) {
-                            self.channelMessage.$remove(deleted).then(ref => {
-                                toastr.success('You just deleted channel: ' + channel.name, 'Succeed!');
-                                $state.go('channels');
-                            }, error => {
-                                toastr.error(error.message, 'Failed to delete messages for channel: ' + channel.name);
-                            });
-                        }
-                    }, error => {
-                        toastr.error(error.message, 'Failed to delete channel: ' + channel.name);
-                    });
-                };
-
-                Confirm.openModal(
-                    'Delete Channel: ' + channel.name + ' ?',
-                    'Channel that has been deleted cannot be restored, and all conversations from this channel will ' +
-                    'be deleted as well (pictures shared can still be retrieved under Options/MyFiles). Are you sure you want to delete?',
-                    'Delete',
-                    'Cancel',
-                    callback
-                );
-            };
         }
     ]);
 }());

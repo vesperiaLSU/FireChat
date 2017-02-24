@@ -3,7 +3,7 @@
 (function () {
     'use strict';
     angular.module('angularfireChatApp').controller('MessageCtrl',
-        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, Comments, Files, $scope, $uibModalStack) {
+        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, Comments, Files, $scope, $uibModalStack, Confirm) {
             var self = this,
                 files = [];
 
@@ -85,7 +85,11 @@
 
             self.messages.$watch(change => {
                 if (change.event === 'child_removed' && $('#previewModal' + change.key).length > 0) {
-                    $uibModalStack.dismissAll();
+                    var dismissAll = function () {
+                        $uibModalStack.dismissAll();
+                    };
+
+                    Confirm.openModal('Picture Deleted', 'The picture you are viewing has been deleted by the owner. Returning to previous window.', 'Confirm', '', dismissAll);
                 }
             });
 

@@ -8,7 +8,7 @@
         </div>
         <div style="text-align: center">
             <button class="btn btn-danger" ng-click="cf.confirm()">{{ cf.yesBtn }}</button>
-            <button class="btn btn-default" ng-click="cf.cancel()" style="margin-left: 20px">{{ cf.noBtn }}</button>
+            <button ng-if="cf.noBtn.length > 0" class="btn btn-default" ng-click="cf.cancel()" style="margin-left: 20px">{{ cf.noBtn }}</button>
         </div>
     </div>
 </div>

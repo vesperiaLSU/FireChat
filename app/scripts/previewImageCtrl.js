@@ -22,6 +22,7 @@
             self.currentFile = data.currentFile;
             self.showDelete = false;
             self.commentCount = self.comments.length;
+            self.liked = false;
 
             $scope.$watch(function () {
                 return self.currentFile;
@@ -65,6 +66,25 @@
                 if (currentindex < allFiles.length - 1) {
                     self.currentFile = allFiles[++currentindex];
                 }
+            };
+
+            self.likePic = function () {
+                Files(data.uid).$loaded().then(files => {
+                    var current = files.find(file => {
+                        return file.id === self.currentFile.id;
+                    });
+                    if (self.liked && current.likes > 0) {
+                        current.likes--;
+                        self.liked = false;
+                    }
+                    else {
+                        current.likes++;
+                        self.liked = true;
+                    }
+                    files.$save(current).then(ref => {
+                        self.likes = current.likes;
+                    }, error => toastr.error(error.message, 'Failed to add likes for file: ' + self.currentFile.name));
+                }, error => toastr.error(error.message, 'Failed to load files for user'));
             };
 
             self.viewComments = function () {
@@ -135,10 +155,18 @@
                 self.url = currentFile.downloadURL;
                 self.showDelete = currentFile.uid === data.uid;
                 fileName = currentFile.name;
+
                 Comments.forFile(currentFile.id).$loaded().then(ret => {
                     self.comments = ret;
                     self.commentCount = self.comments.length;
                 }, error => toastr.error(error.message, 'Failed to load comments for file: ' + currentFile.name));
+
+                Files(data.uid).$loaded().then(files => {
+                    var current = files.find(file => {
+                        return file.id === currentFile.id;
+                    });
+                    self.likes = current.likes;
+                }, error => toastr.error(error.message, 'Failed to load likes for file: ' + currentFile.name));
             }
         }
     ]);

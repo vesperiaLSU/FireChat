@@ -1,6 +1,13 @@
 <div>
     <div class="modal-body" style="padding: 0" ng-mouseover="pi.showDownload = true" ng-mouseleave="pi.showDownload = false">
         <i class="glyphicon glyphicon-remove" id="removeIcon" ng-click="pi.close()"></i>
+        <div type="button" ng-show="pi.showDownload" class="btn btn-default btn-sm" id="btnComment" ng-click="pi.viewComments()">
+            <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
+            <span ng-if="pi.commentCount === 0"><i class="glyphicon glyphicon-pencil"></i>&nbsp;&nbsp;Add Comment</span>
+        </div>
+        <button type="button" ng-show="pi.showDownload" class="btn btn-default btn-sm" id="btnLike" ng-click="pi.likePic();">
+            <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;Like&nbsp;&nbsp;{{ pi.likes }}
+        </button>
         <div type="button" ng-show="pi.showDownload" class="btn btn-default btn-lg col-sm-12" id="dashboard">
             <div class="col-sm-3">
                 <span class="glyphicon glyphicon-arrow-left" style="cursor: pointer" ng-click="pi.prev()" data-toggle="tooltip" data-placement="bottom" title="Previous"></span>

@@ -452,6 +452,27 @@ body {
   left: 20%;
 }
 
+#btnComment {
+  border-radius: 5px;
+  position: absolute;
+  right: 6%;
+  opacity: 0.9;
+  top: 3%;
+  width: 10%;
+}
+
+#btnLike {
+  border-radius: 5px;
+  position: absolute;
+  right: 17%;
+  opacity: 0.9;
+  top: 3%;
+}
+
+.liked {
+  color: #FFA500;
+}
+
 .error-label {
   padding: 5px !important;
   text-align: left;
