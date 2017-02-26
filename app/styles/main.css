@@ -122,12 +122,8 @@ body {
 
 .sidebar .my-info .user-info .options {
   color: #999;
-  font-size: 12px;
-}
-
-.sidebar .my-info .user-info .options a {
-  color: #999;
   font-size: 16px;
+  display: -webkit-inline-box;
 }
 
 .sidebar .presence {
@@ -152,6 +148,15 @@ body {
   overflow-y: scroll;
   padding: 55px 15px 65px 15px;
   background-color: #f1f1f1;
+}
+
+.myFiles-pane {
+  display: inline-block;
+  vertical-align: top;
+  max-height: 800px;
+  width: 100%;
+  overflow-y: auto;
+  padding: 30px 15px;
 }
 
 .message-pane .header {
@@ -184,6 +189,11 @@ body {
   margin-top: 15px;
 }
 
+.myFiles-pane .myFiles-wrap {
+  position: relative;
+  margin-top: 30px;
+}
+
 .message-pane .message-wrap .user-pic {
   width: 36px;
   height: 36px;
@@ -198,7 +208,19 @@ body {
   padding: 0 5px;
 }
 
+.myFiles-pane .myFiles-wrap .message-info {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 10px;
+}
+
 .message-pane .message-wrap .message-info .user-name {
+  color: #555459;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.myFiles-pane .myFiles-wrap .message-info .user-name {
   color: #555459;
   font-weight: bold;
   font-size: 16px;
@@ -387,6 +409,17 @@ body {
   border-radius: 10px;
 }
 
+#goBackIcon {
+  color: #acacac;
+  cursor: pointer;
+  font-size: 30px;
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  border: 2px #acacac solid;
+  border-radius: 20px;
+}
+
 #removeModal {
   position: absolute;
   right: 3%;
@@ -415,11 +448,7 @@ body {
 }
 
 #dashboard {
-  position: absolute;
-  right: 35%;
-  bottom: 5%;
   cursor: default;
-  width: 25%;
   border-radius: 20px;
 }
 
@@ -452,20 +481,14 @@ body {
   left: 20%;
 }
 
-#btnComment {
+.divComment {
   border-radius: 5px;
-  position: absolute;
-  right: 6%;
   opacity: 0.9;
-  top: 3%;
-  width: 10%;
 }
 
-#btnLike {
-  border-radius: 5px;
+#divComment {
   position: absolute;
-  right: 17%;
-  opacity: 0.9;
+  right: 7%;
   top: 3%;
 }
 
@@ -487,6 +510,20 @@ body {
   vertical-align: top;
 }
 
+.myFiles-wrapper {
+  max-width: 650px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 15px;
+}
+
+.user-pic {
+  height: 50px;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
+
 .modal-body .user-pic {
   width: 36px;
   height: 36px;
@@ -497,6 +534,11 @@ body {
 
 .no-padding {
   padding: 0;
+}
+
+#divDashboard {
+  position: absolute;
+  bottom: 5%;
 }
 
 #commentAvatar {

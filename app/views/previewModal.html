@@ -1,41 +1,48 @@
 <div>
     <div class="modal-body" style="padding: 0" ng-mouseover="pi.showDownload = true" ng-mouseleave="pi.showDownload = false">
         <i class="glyphicon glyphicon-remove" id="removeIcon" ng-click="pi.close()"></i>
-        <div type="button" ng-show="pi.showDownload" class="btn btn-default btn-sm" id="btnComment" ng-click="pi.viewComments()">
-            <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
-            <span ng-if="pi.commentCount === 0"><i class="glyphicon glyphicon-pencil"></i>&nbsp;&nbsp;Add Comment</span>
+        <div ng-show="pi.showDownload" id="divComment">
+            <div type="button" class="btn btn-default btn-sm divComment" ng-click="pi.viewComments()" style="margin-right:10px">
+                <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
+                <span ng-if="pi.commentCount === 0"><i class="glyphicon glyphicon-pencil"></i>&nbsp;&nbsp;Add Comment</span>
+            </div>
+            <div type="button" class="btn btn-default btn-sm divComment" ng-click="pi.likePic();">
+                <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;Like&nbsp;&nbsp;{{ pi.likes }}
+            </div>
         </div>
-        <button type="button" ng-show="pi.showDownload" class="btn btn-default btn-sm" id="btnLike" ng-click="pi.likePic();">
-            <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;Like&nbsp;&nbsp;{{ pi.likes }}
-        </button>
-        <div type="button" ng-show="pi.showDownload" class="btn btn-default btn-lg col-sm-12" id="dashboard">
-            <div class="col-sm-3">
-                <span class="glyphicon glyphicon-arrow-left" style="cursor: pointer" ng-click="pi.prev()" data-toggle="tooltip" data-placement="bottom" title="Previous"></span>
-            </div>
-            <div class="col-sm-3">
-                <span class="glyphicon glyphicon-arrow-right" style="cursor: pointer" ng-click="pi.next()" data-toggle="tooltip" data-placement="bottom" title="Next"></span>
-            </div>
-            <div class="col-sm-3">
-                <span class="glyphicon glyphicon-cloud-download" ng-click="pi.download()" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="Save"></span>
-            </div>
-            <div class="col-sm-3">
-                <div class="dropdown">
-                    <span class="glyphicon glyphicon-option-horizontal dropdown-toggle" data-toggle="dropdown" style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="More Actions"></span>
-                    <ul class="dropdown-menu" style="padding: 5px" role="menu">
-                        <li class="actionPoint" ng-click="pi.viewComments()">
-                            <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
-                            <span ng-if="pi.commentCount === 0">Add Comment</span>
-                        </li>
-                        <li ng-show="pi.showDelete" class="divider">
-                        </li>
-                        <li ng-show="pi.showDelete" class="actionPoint" id="deletePic" ng-click="pi.deletePic()">
-                            <span>Delete Picture</span>
-                        </li>
-                    </ul>
-                </div>
 
+        <div ng-show="pi.showDownload" id="divDashboard" class="col-sm-12 no-padding">
+            <div class="col-sm-4"></div>
+            <div class="btn btn-default btn-lg col-sm-4" id="dashboard">
+                <div class="col-sm-3">
+                    <span class="glyphicon glyphicon-arrow-left" style="cursor: pointer" ng-click="pi.prev()" tooltip-placement="bottom" uib-tooltip="Previous"></span>
+                </div>
+                <div class="col-sm-3">
+                    <span class="glyphicon glyphicon-arrow-right" style="cursor: pointer" ng-click="pi.next()" tooltip-placement="bottom" uib-tooltip="Next"></span>
+                </div>
+                <div class="col-sm-3">
+                    <span class="glyphicon glyphicon-cloud-download" ng-click="pi.download()" style="cursor: pointer" tooltip-placement="bottom" uib-tooltip="Save"></span>
+                </div>
+                <div class="col-sm-3">
+                    <div class="dropdown">
+                        <span class="glyphicon glyphicon-option-horizontal dropdown-toggle" data-toggle="dropdown" style="cursor: pointer" tooltip-placement="bottom" uib-tooltip="More Actions"></span>
+                        <ul class="dropdown-menu" style="padding: 5px" role="menu">
+                            <li class="actionPoint" ng-click="pi.viewComments()">
+                                <span ng-if="pi.commentCount > 0">View Comments&nbsp;&nbsp;{{ pi.commentCount }}</span>
+                                <span ng-if="pi.commentCount === 0">Add Comment</span>
+                            </li>
+                            <li ng-show="pi.showDelete" class="divider">
+                            </li>
+                            <li ng-show="pi.showDelete" class="actionPoint" id="deletePic" ng-click="pi.deletePic()">
+                                <span>Delete Picture</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+            <div class="col-sm-4"></div>
         </div>
+
         <img ng-src="{{ pi.url }}" style="max-height: 700px" />
     </div>
 </div>

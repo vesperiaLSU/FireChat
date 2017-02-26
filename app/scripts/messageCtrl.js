@@ -3,7 +3,7 @@
 (function () {
     'use strict';
     angular.module('angularfireChatApp').controller('MessageCtrl',
-        function (profile, channelName, messages, FileUploader, $uibModal, Storage, $timeout, Comments, Files, $scope, $uibModalStack, Confirm) {
+        function (profile, channelName, channelId, messages, FileUploader, $uibModal, Storage, $timeout, Comments, Files, $scope, $uibModalStack, Confirm) {
             var self = this,
                 files = [];
 
@@ -117,9 +117,11 @@
                         return msg.file && msg.file.id === ret.fileId;
                     });
 
-                    self.messages.$remove(messageToDelete).then(ref => {
-                        toastr.success('Picture deleted: ' + ret.name, 'Succeed!');
-                    }, error => toastr.error(error.message, 'Failed to delete message: ' + messageToDelete.$id));
+                    if (messageToDelete) {
+                        self.messages.$remove(messageToDelete).then(ref => {
+                            toastr.success('Picture deleted: ' + ret.name, 'Succeed!');
+                        }, error => toastr.error(error.message, 'Failed to delete message: ' + messageToDelete.$id));
+                    }
                 }, () => {
                     // modal dismissed
                 });
@@ -152,7 +154,6 @@
                             id: file.id,
                             downloadURL: file.downloadURL,
                             name: file.name,
-                            likes: file.likes,
                             uid: file.uid,
                             timestamp: file.timestamp
                         } : null
@@ -175,7 +176,8 @@
                                     downloadURL: file.downloadURL,
                                     name: file.name,
                                     likes: file.likes,
-                                    timestamp: file.timestamp
+                                    timestamp: file.timestamp,
+                                    channelId: channelId
                                 }).then(ref => {
                                     // files added
                                 }, error => toastr.error(error.message, 'Failed to add file: ' + file.name));

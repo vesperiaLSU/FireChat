@@ -1,0 +1,26 @@
+<div><i class="glyphicon glyphicon-remove" id="goBackIcon" ng-click="mf.close()"></i></div>
+<div class="myFiles-wrapper">
+    <div class="page-header text-center">
+        <h1>
+            <img class="logo-img" src="images/logo.png" />My Files
+        </h1>
+    </div>
+    <div class="myFiles-pane">
+        <div ng-if="mf.myFiles.length === 0" class="emptyComment">
+            <h4>Oops! You don't have any file yet.</h4>
+        </div>
+        <div ng-repeat="file in mf.myFiles" class="myFiles-wrap">
+            <div style="cursor: pointer" ng-style="{border: hover ? '2px solid #D8D8D8' : 'none'}" ng-mouseover="hover = true" ng-mouseleave='hover = false' ng-click="mf.viewImage(file)">
+                <div style="display: inline-flex;">
+                    <img class="user-pic" ng-src="{{ file.downloadURL }}" />
+                    <div class="message-info">
+                        <span class="timestamp">Posted at {{ file.timestamp | date: 'short' }}</span>
+                        <div class="user-name">
+                            {{ file.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -43,7 +43,9 @@
     },
     "userMessage": {
       "$uid1": {
+        ".write": "auth !== null",
         "$uid2": {
+          ".write": "auth !== null",
           "$messageId": {
             ".read": "auth !== null && ($uid1 === auth.uid || $uid2 === auth.uid)",
             ".write": "auth !== null && newData.child('uid').val() === auth.uid",

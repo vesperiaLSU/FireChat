@@ -6,7 +6,7 @@
         function (data, comments, Users, $uibModalInstance) {
             var self = this;
             self.downloadURL = data.currentFile.downloadURL;
-            self.postedBy = data.currentFile.uid;
+            self.postedBy = data.currentFile.uid ? data.currentFile.uid : data.uid;
             self.postedDate = data.currentFile.timestamp;
             self.comments = comments;
             self.uid = data.uid;

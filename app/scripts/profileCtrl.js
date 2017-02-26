@@ -1,9 +1,9 @@
 /*global angular,toastr*/
 
-(function() {
+(function () {
     angular.module('angularfireChatApp')
         .controller('ProfileCtrl', ["$state", "md5", "currentUser", "profile",
-            function($state, md5, currentUser, profile) {
+            function ($state, md5, currentUser, profile) {
                 var self = this;
                 self.profile = profile;
                 self.btnTxt = self.profile.displayName ? 'Update display name' : 'Create a display name for chat';
@@ -13,8 +13,12 @@
                     $state.go('home');
                 }
 
+                self.close = function () {
+                    $state.go('channels');
+                };
+
                 // update the user profile
-                self.updateProfile = function() {
+                self.updateProfile = function () {
                     self.profile.emailHash = md5.createHash(currentUser.email);
                     self.profile.$save().then(ref => {
                         if (ref.key === self.profile.$id) {

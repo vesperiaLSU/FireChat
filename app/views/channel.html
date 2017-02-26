@@ -33,8 +33,18 @@
                 </div>
 
                 <div class="options">
-                    <a style="font-size:16px" ui-sref="profile">Edit Profile</a> /
-                    <a style="font-size:16px" href="#" ng-click="channel.logout()">Logout</a>
+                    <div class="dropup">
+                        <span class="dropdown-toggle" data-toggle="dropdown" style="cursor: pointer"><i class="glyphicon glyphicon-cog"></i>&nbsp;Options</span>
+                        <ul class="dropdown-menu" style="padding: 5px" role="menu">
+                            <li class="actionPoint" ng-click="channel.editProfile()">
+                                <span>Edit Profile</span>
+                            </li>
+                            <li class="actionPoint" ng-click="channel.viewMyFiles()">
+                                <span>My Files</span>
+                            </li>
+                        </ul>
+                    </div>&nbsp;&nbsp;/&nbsp;&nbsp;
+                    <span style="font-size:16px; cursor: pointer" ng-click="channel.logout()"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</span>
                 </div>
             </div>
         </div>
@@ -45,3 +55,14 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    /*global $*/
+    $(function () {
+        $('.actionPoint').hover(function () {
+            $(this).addClass('btn-info');
+        }, function () {
+            $(this).removeClass('btn-info');
+        });
+    });
+</script>

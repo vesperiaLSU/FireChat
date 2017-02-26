@@ -28,6 +28,14 @@
                 admin: self.profile.$id
             };
 
+            self.editProfile = function () {
+                $state.go('profile');
+            };
+
+            self.viewMyFiles = function () {
+                $state.go('myFiles');
+            };
+
             // get a reference to the user service methods
             self.getDisplayName = Users.getDisplayName;
             self.getGravatar = Users.getGravatar;

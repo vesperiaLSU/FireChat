@@ -50,10 +50,14 @@
                                         }
                                         else {
                                             $state.go('profile');
+                                            toastr.warning('A display name is required before chatting', 'Reminder!');
                                         }
                                     }, error => $state.go('home'));
                                 }
-                            }, error => $state.go('home'));
+                            }, error => {
+                                $state.go('home');
+                                toastr.warning('You need to sign in first', 'Oops!');
+                            });
                         },
                         channelMessage: function (Channels) {
                             return Channels.channelMessage.$loaded();
@@ -70,6 +74,9 @@
                         },
                         channelName: function ($stateParams, channels) {
                             return '#' + channels.$getRecord($stateParams.channelId).name;
+                        },
+                        channelId: function ($stateParams) {
+                            return $stateParams.channelId;
                         }
                     }
                 })
@@ -85,6 +92,9 @@
                             return Users.all.$loaded().then(function () {
                                 return '@' + Users.getDisplayName($stateParams.uid);
                             });
+                        },
+                        channelId: function ($stateParams) {
+                            return $stateParams.uid;
                         }
                     }
                 })
@@ -105,15 +115,53 @@
                                 if (user) {
                                     return Users.getProfile(user.uid).$loaded();
                                 }
-                            }, error => $state.go('home'));
+                                else {
+                                    $state.go('home');
+                                    toastr.warning('You need to sign in first', 'Oops!');
+                                }
+                            }, error => {
+                                $state.go('home');
+                                toastr.warning('You need to sign in first', 'Oops!');
+                            });
                         },
                         currentUser: function ($state, $firebaseAuthService) {
                             return $firebaseAuthService.$requireSignIn().then(user => {
                                 return user;
-                            }, error => $state.go('home'));
+                            }, error => {
+                                $state.go('home');
+                                toastr.warning('You need to sign in first', 'Oops!');
+                            });
                         }
                     }
-
+                })
+                .state('myFiles', {
+                    url: '/myFiles',
+                    templateUrl: 'views/myFiles.html',
+                    controller: 'MyFilesCtrl as mf',
+                    resolve: {
+                        Files: 'Files',
+                        myFiles: function ($state, Files, $firebaseAuthService) {
+                            return $firebaseAuthService.$requireSignIn().then(user => {
+                                if (user) {
+                                    return Files(user.uid).$loaded();
+                                }
+                                else {
+                                    $state.go('home');
+                                    toastr.warning('You need to sign in first', 'Oops!');
+                                }
+                            }, error => {
+                                $state.go('home');
+                                toastr.warning('You need to sign in first', 'Oops!');
+                            });
+                        },
+                        uid: function ($firebaseAuthService) {
+                            return $firebaseAuthService.$requireSignIn().then(user => {
+                                if (user) {
+                                    return user.uid;
+                                }
+                            });
+                        }
+                    }
                 });
 
             $urlRouterProvider.otherwise('/');

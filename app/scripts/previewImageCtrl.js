@@ -20,7 +20,7 @@
 
             self.comments = comments;
             self.currentFile = data.currentFile;
-            self.showDelete = false;
+            self.showDelete = data.isMyFile ? true : false;
             self.commentCount = self.comments.length;
             self.liked = false;
 
@@ -153,7 +153,7 @@
             // helper to update preview modal
             function updatePreview(currentFile) {
                 self.url = currentFile.downloadURL;
-                self.showDelete = currentFile.uid === data.uid;
+                self.showDelete = currentFile.uid === data.uid || self.showDelete;
                 fileName = currentFile.name;
 
                 Comments.forFile(currentFile.id).$loaded().then(ret => {

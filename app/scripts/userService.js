@@ -23,7 +23,9 @@
                 }
             },
             getGravatar: function (uid) {
-                return '//www.gravatar.com/avatar/' + users.$getRecord(uid).emailHash;
+                if (users.length > 0) {
+                    return '//www.gravatar.com/avatar/' + users.$getRecord(uid).emailHash;
+                }
             },
             setOnline: function (uid) {
                 var connected = $firebaseObject(connectedRef);
